@@ -17,7 +17,7 @@ GameBoard.prototype = new Entity();
 GameBoard.prototype.constructor = GameBoard;
 
 GameBoard.prototype.update = function () {
-    if (this.game.click) {
+    if (this.game.click && this.game.click.x > -1 && this.game.click.x < 19 && this.game.click.y > -1 && this.game.click.y < 19 ) {
         this.board[this.game.click.x][this.game.click.y] = this.player;
         this.player = this.player === 1 ? 2 : 1;
     }
