@@ -1,3 +1,10 @@
+//Edited by 
+//Dongsheng Han
+//Karan Kurbur
+//Dirk Sexton
+
+//TCSS491 2018
+
 function AssetManager() {
     this.successCount = 0;
     this.errorCount = 0;

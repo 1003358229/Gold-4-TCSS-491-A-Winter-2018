@@ -1,7 +1,15 @@
-// GameBoard code below
+//Edited by 
+//Dongsheng Han
+//Karan Kurbur
+//Dirk Sexton
 
+//TCSS491 2018
+
+//Gameboard
 function GameBoard(game) {
     Entity.call(this, game, 20, 20);
+	this.score = 0;
+	this.money = 5000;
     this.grid = false;
     this.player = 1;
     this.board = [];
@@ -22,13 +30,27 @@ GameBoard.prototype.update = function () {
 		&& this.board[this.game.click.x][this.game.click.y] === 0) {
         this.board[this.game.click.x][this.game.click.y] = this.player;
 		
-        // this.player = this.player === 1 ? 2 : 1;
+	//Money subtraction
+		if (this.player === 1 && this.money - 100 > 0) {
+			this.money -= 100;
+		}
+		if (this.player === 2 && this.money - 50 > 0) {
+			this.money -= 50;
+		}
+		if (this.player === 3 && this.money - 75 > 0) {
+			this.money -= 75;
+		}	
     }
+	
+	//Select tower
 	if (this.game.click && this.game.click.x === 21 && this.game.click.y === 1) {
         this.player = 1;
     }
 	if (this.game.click && this.game.click.x === 21 && this.game.click.y === 2) {
         this.player = 2;
+    }
+	if (this.game.click && this.game.click.x === 21 && this.game.click.y === 3) {
+        this.player = 3;
     }
     Entity.prototype.update.call(this);
 }
@@ -38,20 +60,34 @@ GameBoard.prototype.draw = function (ctx) {
 	
     var size = 41.67;
     var offset = 45;
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), 21 * size + offset, size + offset, 40, 40);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), 21 * size + offset, 2 * size + offset, 40, 40);
+	
+	//Score and money
+	ctx.font = "25px Arial";
+	ctx.strokeText("Score: " + this.score, 45, 40); 
+	ctx.strokeText("Money: " + this.money, 420, 40); 
+	ctx.strokeStyle = "white";
+	ctx.strokeText("Towers", 865, 40); 
+	
+	//Draw tower menu
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), 21 * size + offset, size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), 21 * size + offset, 2 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), 21 * size + offset, 3 * size + offset - 20, 40, 60);
+	
 
     for (var i = 0; i < 22; i++) {
         for (var j = 0; j < 18; j++) {
 			// shows the grid of each image placement
-            ctx.strokeStyle = "Green";
-            ctx.strokeRect(i * size + offset, j * size + offset, size, size);
+            //ctx.strokeStyle = "Green";
+            //ctx.strokeRect(i * size + offset, j * size + offset, size, size);
 
             if (this.board[i][j] === 1) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), i * size + offset, j * size + offset, 40, 40);
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), i * size + offset, j * size + offset - 20, 40, 60);
             }
             if (this.board[i][j] === 2) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), i * size + offset, j * size + offset, 40, 40);
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), i * size + offset, j * size + offset -20, 40, 60);
+            }
+			if (this.board[i][j] === 3) {
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), i * size + offset, j * size + offset - 20, 40, 60);
             }
         }
     }
@@ -59,9 +95,10 @@ GameBoard.prototype.draw = function (ctx) {
     // draw mouse shadow
     if (this.game.mouse) {
         ctx.save();
-        ctx.globalAlpha = 0.5;
-        if(this.player === 1) ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset, 40, 40);
-        if(this.player === 2)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset, 40, 40);
+        ctx.globalAlpha = 0.25;
+        if(this.player === 1) ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
+        if(this.player === 2)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
+		if(this.player === 3)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
         ctx.restore();
     }
 }
@@ -75,6 +112,7 @@ var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./img/960px-Blank_Go_board.png");
 ASSET_MANAGER.queueDownload("./img/black.png");
 ASSET_MANAGER.queueDownload("./img/white.png");
+ASSET_MANAGER.queueDownload("./img/tower3.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
