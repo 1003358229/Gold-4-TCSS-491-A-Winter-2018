@@ -62,11 +62,11 @@ GameEngine.prototype.startInput = function () {
     var that = this;
 
     var getXandY = function (e) {
-        var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left - 23.5;
-        var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top - 23.5;
+        var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left - 45;
+        var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top - 45;
 
-        x = Math.floor(x / 39.55);
-        y = Math.floor(y / 39.55);
+        x = Math.floor(x / 41.67);
+        y = Math.floor(y / 41.67);
 
         return { x: x, y: y };
     }
@@ -77,7 +77,7 @@ GameEngine.prototype.startInput = function () {
     }, false);
 
     this.ctx.canvas.addEventListener("click", function (e) {
-        //console.log(getXandY(e));
+        console.log(getXandY(e));
         that.click = getXandY(e);
     }, false);
 
