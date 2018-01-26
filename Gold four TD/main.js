@@ -9,7 +9,7 @@
 function GameBoard(game) {
     Entity.call(this, game, 20, 20);
 	this.score = 0;
-	this.money = 5000;
+	this.money = 1000;
     this.grid = false;
     this.player = 1;
     this.board = [];
@@ -72,7 +72,7 @@ GameBoard.prototype.draw = function (ctx) {
 	ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), 21 * size + offset, size + offset - 20, 40, 60);
 	ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), 21 * size + offset, 2 * size + offset - 20, 40, 60);
 	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), 21 * size + offset, 3 * size + offset - 20, 40, 60);
-	
+
 
     for (var i = 0; i < 22; i++) {
         for (var j = 0; j < 18; j++) {
