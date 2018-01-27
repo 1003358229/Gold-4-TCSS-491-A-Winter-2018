@@ -160,9 +160,9 @@ ASSET_MANAGER.downloadAll(function () {
 
 
     //console.log(gameboard);
-    var attacker = new attackDude(gameEngine, ASSET_MANAGER.getAsset("./img/Attack.png"));
     gameEngine.addEntity(gameboard);
     gameEngine.init(ctx);
+    var attacker = new attackDude(gameEngine, ASSET_MANAGER.getAsset("./img/Attack.png"));
     gameEngine.addEntity(attacker);
     gameEngine.start();
 });
