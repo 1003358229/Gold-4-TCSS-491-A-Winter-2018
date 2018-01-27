@@ -11,7 +11,10 @@ function GameBoard(game) {
 	this.score = 0;
 	this.money = 1000;
     this.grid = false;
-    this.player = 1;
+    this.canBuy = true;
+    this.shadow = false;
+
+    this.player = 0;
     this.board = [];
     for (var i = 0; i < 22; i++) {
         this.board.push([]);
@@ -28,20 +31,41 @@ GameBoard.prototype.update = function () {
     if (this.game.click 
 		&& this.game.click.x > -1 && this.game.click.x < 18 && this.game.click.y > -1 && this.game.click.y < 18 
 		&& this.board[this.game.click.x][this.game.click.y] === 0) {
-        this.board[this.game.click.x][this.game.click.y] = this.player;
-		
-	//Money subtraction
-		if (this.player === 1 && this.money - 100 > 0) {
-			this.money -= 100;
+
+        
+		var canAfford = false;
+        
+
+        //Using this.canBuy to determine if to draw shadow and if you can place another tower
+        //TODO: modify this.canBuy outside of click loop to fix small bug where you
+        //have less than price of current tower but haven't clicked since then 
+        //Money subtraction
+		if (this.player === 1 && this.money - 100 >= 0) {
+            this.money -= 100;
+            canAfford = true;
 		}
-		if (this.player === 2 && this.money - 50 > 0) {
-			this.money -= 50;
+		if (this.player === 2 && this.money - 50 >= 0) {
+            this.money -= 50;
+            canAfford = true;
 		}
-		if (this.player === 3 && this.money - 75 > 0) {
-			this.money -= 75;
-		}	
+		if (this.player === 3 && this.money - 75 >= 0) {
+            this.money -= 75;
+            canAfford = true;
+        }	
+
+        if(this.money == 0) {
+            this.canBuy = false;
+        }
+        
+        if(canAfford) {
+            this.board[this.game.click.x][this.game.click.y] = this.player;
+        }
+        else {
+            this.canBuy = false;
+        }
     }
-	
+
+
 	//Select tower
 	if (this.game.click && this.game.click.x === 21 && this.game.click.y === 1) {
         this.player = 1;
@@ -93,7 +117,7 @@ GameBoard.prototype.draw = function (ctx) {
     }
 
     // draw mouse shadow
-    if (this.game.mouse) {
+    if (this.game.mouse && this.canBuy) {
         ctx.save();
         ctx.globalAlpha = 0.25;
         if(this.player === 1) ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
@@ -101,6 +125,7 @@ GameBoard.prototype.draw = function (ctx) {
 		if(this.player === 3)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
         ctx.restore();
     }
+
 }
 
 
