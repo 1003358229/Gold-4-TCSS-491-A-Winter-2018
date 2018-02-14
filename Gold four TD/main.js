@@ -8,6 +8,9 @@
 //Gameboard
 function GameBoard(game) {
     Entity.call(this, game, 20, 20);
+	this.radius_x = 0;
+	this.radius_y = 0;
+	this.display_radius = false;
 	this.score = 0;
 	this.money = 100000;
     this.grid = false;
@@ -40,51 +43,65 @@ GameBoard.prototype.getPlaceTower = function() {
 GameBoard.prototype.update = function () {
     if (this.game.click 
 		&& this.game.click.x > -1 && this.game.click.x < 18 
-		&& this.game.click.y > -1 && this.game.click.y < 18 
-		&& this.board[this.game.click.x][this.game.click.y] === 0) {
+		&& this.game.click.y > -1 && this.game.click.y < 18 ) {
+		
+		//place tower on an empty space
+		if(this.board[this.game.click.x][this.game.click.y] === 0){
+			//changed from false to true to avoid bug
+			var canAfford = true;
+			//I want to not display the shadow after a success purchase of tower
+			purchaes_and_placed = false;
 
-        //changed from false to true to avoid bug
-		var canAfford = true;
-        //I want to not display the shadow after a success purchase of tower
-		purchaes_and_placed = false;
+			//Using this.canBuy to determine if to draw shadow and if you can place another tower
+			//TODO: modify this.canBuy outside of click loop to fix small bug where you
+			//have less than price of current tower but haven't clicked since then 
+			//Money subtraction
+			//put all four statement in to one
+			if (this.player === 1 && this.money >= 50) {
+				this.money -= 50;
+			} else if (this.player === 2 && this.money >= 100) {
+				this.money -= 100;
+			} else if (this.player === 3 && this.money >= 75) {
+				this.money -= 75;
+			} else if (this.player === 4 && this.money >= 125) {
+				this.money -= 125;
+			} else if (this.player === 5 && this.money >= 150) {
+				this.money -= 250;
+			} else if (this.player === 6 && this.money >= 275) {
+				this.money -= 275;
+			} else if (this.player === 7 && this.money >= 150) {
+				this.money -= 150;
+			} else if (this.player === 8 && this.money >= 350) {
+				this.money -= 350;
+			}else{
+				canAfford = false;
+			}
 
-        //Using this.canBuy to determine if to draw shadow and if you can place another tower
-        //TODO: modify this.canBuy outside of click loop to fix small bug where you
-        //have less than price of current tower but haven't clicked since then 
-        //Money subtraction
-		//put all four statement in to one
-		if (this.player === 1 && this.money >= 50) {
-            this.money -= 50;
-		} else if (this.player === 2 && this.money >= 100) {
-            this.money -= 100;
-		} else if (this.player === 3 && this.money >= 75) {
-            this.money -= 75;
-        } else if (this.player === 4 && this.money >= 125) {
-            this.money -= 125;
-		} else if (this.player === 5 && this.money >= 150) {
-            this.money -= 250;
-        } else if (this.player === 6 && this.money >= 275) {
-            this.money -= 275;
-		} else if (this.player === 7 && this.money >= 150) {
-            this.money -= 150;
-        } else if (this.player === 8 && this.money >= 350) {
-            this.money -= 350;
-        }else{
-			canAfford = false;
-        }
+			// //TODO: fix to be accurate to specific tower: EX: start with 100 use 75 tower, have 25 left but cant place
+			// if(this.money == 0) {
+				// this.canBuy = false;
+			// }
+			
+			if(canAfford) {
+				this.board[this.game.click.x][this.game.click.y] = this.player;
+				purchaes_and_placed = true;
+				this.player = 0;
+			} else {
+				this.canBuy = false;
+			}
+			
+			//draw radius for tower already been placed
+			this.radius_x = this.game.click.x;
+			this.radius_y = this.game.click.y;
+			this.display_radius = false;
+		}
+		//draw radius for tower already been placed
+		if(this.board[this.game.click.x][this.game.click.y] != 0){
+			this.radius_x = this.game.click.x;
+			this.radius_y = this.game.click.y;
+			this.display_radius = true;
+		}
 
-        // //TODO: fix to be accurate to specific tower: EX: start with 100 use 75 tower, have 25 left but cant place
-        // if(this.money == 0) {
-            // this.canBuy = false;
-        // }
-        
-        if(canAfford) {
-            this.board[this.game.click.x][this.game.click.y] = this.player;
-			purchaes_and_placed = true;
-			this.player = 0;
-        } else {
-            this.canBuy = false;
-        }
     }
 
 
@@ -121,8 +138,6 @@ GameBoard.prototype.update = function () {
         this.player = 8;
 		this.canBuy = true;
     }
-
-
 	
     Entity.prototype.update.call(this);
 }
@@ -209,6 +224,14 @@ GameBoard.prototype.draw = function (ctx) {
         ctx.restore();
 	}
 	
+	//draw radius for tower already been placed
+	if(this.board[this.radius_x][this.radius_y] != 0){
+		ctx.beginPath();
+		ctx.rect(offset + (this.radius_x-2)*size, offset + (this.radius_y-2)*size, size * 5, size * 5);
+		ctx.lineWidth="3";
+		ctx.strokeStyle="red";
+		ctx.stroke();
+	}
 }
 
 
@@ -267,9 +290,9 @@ function attackDude(game) {
 	this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, 1);
 	this.direction = 1;//1R 2L 3U 4D
 	this.x = 35;
-    this.y = 235;
+    this.y = 235;//offset x = 35 y = 25 size = 41.67
 	this.rannum =  1;
-	//this.rannum =  Math.round(Math.random());
+	// this.rannum =  Math.round(Math.random());
     this.game = game;
     this.ctx = game.ctx;
 }
@@ -298,11 +321,10 @@ attackDude.prototype.update = function () {
 		this.direction = 1;
 		this.x += 1;
 	}
-	
-	if (this.rannum === 0 && this.x > 150){
-		this.direction = 3;
-		this.y -= 1;
-	}
+	// if (this.rannum === 0 && this.x > 150){
+		// this.direction = 3;
+		// this.y -= 1;
+	// }
 	if (this.rannum === 1 && this.x >= 157){
 		this.direction = 4;
 		this.y += 1;
@@ -312,6 +334,8 @@ attackDude.prototype.update = function () {
 		this.x += 1;
 		this.y -= 1;
 	}
+	
+	// var ent = this.game.entities[i];
 	
 	Entity.prototype.update.call(this);
 }
@@ -333,12 +357,15 @@ ASSET_MANAGER.queueDownload("./img/tower6.png");
 ASSET_MANAGER.queueDownload("./img/tower7.png");
 ASSET_MANAGER.queueDownload("./img/tower8.png");
 ASSET_MANAGER.queueDownload("./img/Attack.png");
+ASSET_MANAGER.queueDownload("./img/cannonball.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
 
+	
+	
     var gameEngine = new GameEngine();
     var gameboard = new GameBoard(gameEngine);
     console.log("GAME ENGINE " + gameEngine);
