@@ -53,12 +53,22 @@ GameBoard.prototype.update = function () {
         //have less than price of current tower but haven't clicked since then 
         //Money subtraction
 		//put all four statement in to one
-		if (this.player === 1 && this.money >= 100) {
-            this.money -= 100;
-		} else if (this.player === 2 && this.money >= 50) {
+		if (this.player === 1 && this.money >= 50) {
             this.money -= 50;
+		} else if (this.player === 2 && this.money >= 100) {
+            this.money -= 100;
 		} else if (this.player === 3 && this.money >= 75) {
             this.money -= 75;
+        } else if (this.player === 4 && this.money >= 125) {
+            this.money -= 125;
+		} else if (this.player === 5 && this.money >= 150) {
+            this.money -= 250;
+        } else if (this.player === 6 && this.money >= 275) {
+            this.money -= 275;
+		} else if (this.player === 7 && this.money >= 150) {
+            this.money -= 150;
+        } else if (this.player === 8 && this.money >= 350) {
+            this.money -= 350;
         }else{
 			canAfford = false;
         }
@@ -79,11 +89,11 @@ GameBoard.prototype.update = function () {
 
 
 	//Select tower
-	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 1 && this.money >= 100) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 1 && this.money >= 50) {
         this.player = 1;
 		this.canBuy = true;
     }
-	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 2 && this.money >= 50) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 2 && this.money >= 100) {
         this.player = 2;
 		this.canBuy = true;
     }
@@ -91,6 +101,27 @@ GameBoard.prototype.update = function () {
         this.player = 3;
 		this.canBuy = true;
     }
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 4 && this.money >= 125) {
+        this.player = 4;
+		this.canBuy = true;
+    }
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 5 && this.money >= 150) {
+        this.player = 5;
+		this.canBuy = true;
+    }
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 6 && this.money  >= 275) {
+        this.player = 6;
+		this.canBuy = true;
+    }
+		if (this.game.click && this.game.click.x === 20 && this.game.click.y === 7 && this.money >= 150) {
+        this.player = 7;
+		this.canBuy = true;
+    }
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 8 && this.money >= 350) {
+        this.player = 8;
+		this.canBuy = true;
+    }
+
 
 	
     Entity.prototype.update.call(this);
@@ -108,29 +139,56 @@ GameBoard.prototype.draw = function (ctx) {
 	ctx.strokeText("Money: " + this.money, 420, 40); 
 	ctx.strokeStyle = "white";
 	ctx.strokeText("Towers", 865, 40); 
-	ctx.strokeText("100", 930, 110); 
-	ctx.strokeText("50", 930, 150); 
-	ctx.strokeText("75", 930, 190); 
+	ctx.strokeText("$50", 930, 110); 
+	ctx.strokeText("$100", 930, 150); 
+	ctx.strokeText("$75", 930, 190); 
+	ctx.strokeText("$125", 930, 230); 
+	ctx.strokeText("$150", 930, 270); 
+	ctx.strokeText("$275", 930, 310); 
+	ctx.strokeText("$150", 930, 350); 
+	ctx.strokeText("$350", 930, 390); 
+ 
 	
 	//Draw tower menu
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), 20 * size + offset, size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), 20 * size + offset, 2 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), 20 * size + offset, size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower2.png"), 20 * size + offset, 2 * size + offset - 20, 40, 60);
 	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), 20 * size + offset, 3 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower4.png"), 20 * size + offset, 4 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower5.png"), 20 * size + offset, 5 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower6.png"), 20 * size + offset, 6 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower7.png"), 20 * size + offset, 7 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower8.png"), 20 * size + offset, 8 * size + offset - 20, 40, 60);
+
 
 
     for (var i = 0; i < 18; i++) {
         for (var j = 0; j < 18; j++) {
 			// // shows the grid of each image placement
-            // ctx.strokeStyle = "Green";
-            // ctx.strokeRect(i * size + offset, j * size + offset, size, size);
+             ctx.strokeStyle = "Green";
+             ctx.strokeRect(i * size + offset, j * size + offset, size, size);
             if (this.board[i][j] === 1) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), i * size + offset, j * size + offset - 20, 40, 60);
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), i * size + offset, j * size + offset - 20, 40, 60);
             }
             if (this.board[i][j] === 2) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), i * size + offset, j * size + offset -20, 40, 60);
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower2.png"), i * size + offset, j * size + offset -20, 40, 60);
             }
 			if (this.board[i][j] === 3) {
 				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), i * size + offset + 3, j * size + offset - 20, 40, 60);
+            }
+			if (this.board[i][j] === 4) {
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower4.png"), i * size + offset, j * size + offset - 20, 40, 60);
+            }
+            if (this.board[i][j] === 5) {
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower5.png"), i * size + offset, j * size + offset -20, 40, 60);
+            }
+			if (this.board[i][j] === 6) {
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower6.png"), i * size + offset + 3, j * size + offset - 20, 40, 60);
+            }
+			if (this.board[i][j] === 7) {
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower7.png"), i * size + offset, j * size + offset - 20, 40, 60);
+            }
+            if (this.board[i][j] === 8) {
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower8.png"), i * size + offset, j * size + offset -20, 40, 60);
             }
         }
     }
@@ -140,9 +198,14 @@ GameBoard.prototype.draw = function (ctx) {
 
 		ctx.save();
         ctx.globalAlpha = 0.25;
-        if(this.player === 1)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
-        if(this.player === 2)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
+        if(this.player === 1)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
+        if(this.player === 2)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower2.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
 		if(this.player === 3)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), this.game.mouse.x * size + offset + 3, this.game.mouse.y * size + offset - 20, 40, 60);
+		if(this.player === 4)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower4.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
+        if(this.player === 5)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower5.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
+		if(this.player === 6)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower6.png"), this.game.mouse.x * size + offset + 3, this.game.mouse.y * size + offset - 20, 40, 60);
+		if(this.player === 7)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower7.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
+        if(this.player === 8)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower8.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
         ctx.restore();
 	}
 	
@@ -253,9 +316,14 @@ attackDude.prototype.update = function () {
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/960px-Blank_Go_board.png");
-ASSET_MANAGER.queueDownload("./img/black.png");
-ASSET_MANAGER.queueDownload("./img/white.png");
+ASSET_MANAGER.queueDownload("./img/tower1.png");
+ASSET_MANAGER.queueDownload("./img/tower2.png");
 ASSET_MANAGER.queueDownload("./img/tower3.png");
+ASSET_MANAGER.queueDownload("./img/tower4.png");
+ASSET_MANAGER.queueDownload("./img/tower5.png");
+ASSET_MANAGER.queueDownload("./img/tower6.png");
+ASSET_MANAGER.queueDownload("./img/tower7.png");
+ASSET_MANAGER.queueDownload("./img/tower8.png");
 ASSET_MANAGER.queueDownload("./img/Attack.png");
 
 ASSET_MANAGER.downloadAll(function () {
