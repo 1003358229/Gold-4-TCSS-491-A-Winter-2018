@@ -15,7 +15,7 @@ function GameBoard(game) {
 	this.purchaes_and_placed = false;
     this.player = 0;
     this.board = [];
-    for (var i = 0; i < 22; i++) {
+    for (var i = 0; i < 18; i++) {
         this.board.push([]);
         for (var j = 0; j < 18; j++) {
             this.board[i].push(0);
@@ -118,12 +118,11 @@ GameBoard.prototype.draw = function (ctx) {
 	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), 20 * size + offset, 3 * size + offset - 20, 40, 60);
 
 
-    for (var i = 0; i < 22; i++) {
+    for (var i = 0; i < 18; i++) {
         for (var j = 0; j < 18; j++) {
-			// shows the grid of each image placement
-            //ctx.strokeStyle = "Green";
-            //ctx.strokeRect(i * size + offset, j * size + offset, size, size);
-
+			// // shows the grid of each image placement
+            // ctx.strokeStyle = "Green";
+            // ctx.strokeRect(i * size + offset, j * size + offset, size, size);
             if (this.board[i][j] === 1) {
 				ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), i * size + offset, j * size + offset - 20, 40, 60);
             }
@@ -131,35 +130,122 @@ GameBoard.prototype.draw = function (ctx) {
 				ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), i * size + offset, j * size + offset -20, 40, 60);
             }
 			if (this.board[i][j] === 3) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), i * size + offset, j * size + offset - 20, 40, 60);
+				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), i * size + offset + 3, j * size + offset - 20, 40, 60);
             }
         }
     }
 
     // draw mouse shadow
     if (this.game.mouse && this.canBuy && !this.purchaes_and_placed) {
-		// //testing console log
-		// var x = this.purchaes_and_placed.toString();
-		// var y = this.canBuy.toString();
-		// var z = this.game.mouse.toString();
-		// console.log(x, y, z);
+
 		ctx.save();
         ctx.globalAlpha = 0.25;
-        if(this.player === 1) ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
+        if(this.player === 1)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
         if(this.player === 2)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
-		if(this.player === 3)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
+		if(this.player === 3)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), this.game.mouse.x * size + offset + 3, this.game.mouse.y * size + offset - 20, 40, 60);
         ctx.restore();
 	}
-    // }else{
-		// // testing console log
-		// var a = this.purchaes_and_placed.toString();
-		// var b = this.canBuy.toString();
-		// // var c = this.game.mouse.toString();
-		// console.log(a, b);
-	// }
-	
 	
 }
+
+
+
+
+
+//add attacker
+function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, scale) {//sheetWidth, 
+    this.spriteSheet = spriteSheet;
+	this.startX = startX;
+    this.startY = startY;
+    this.frameWidth = frameWidth;
+    this.frameHeight = frameHeight;
+    this.frameDuration = frameDuration;
+    this.loop = loop;
+    this.scale = scale;
+    this.frames = frames;
+	
+    this.totalTime = frameDuration * frames;
+    this.elapsedTime = 0;
+}
+
+Animation.prototype.drawFrame = function (tick, ctx, x, y) {
+    this.elapsedTime += tick;
+    if (this.loop) {
+        if (this.isDone()) {
+            this.elapsedTime = 0;
+        }
+    } else if (this.isDone()) {
+        return;
+    }
+	
+    var xindex = this.currentFrame();
+    var yindex = 0;
+	
+    ctx.drawImage(this.spriteSheet,
+                 xindex * this.frameWidth + this.startX, yindex * this.frameHeight + this.startY,  // source from sheet
+                 this.frameWidth, this.frameHeight,
+                 x, y,
+                 this.frameWidth * this.scale,
+                 this.frameHeight * this.scale);
+}
+
+Animation.prototype.currentFrame = function () {
+    return Math.floor(this.elapsedTime / this.frameDuration);
+}
+
+Animation.prototype.isDone = function () {
+    return (this.elapsedTime >= this.totalTime);
+}
+
+function attackDude(game) {
+	this.animationR = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 128, 64, 64, 0.2, 4, true, 1);
+	this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, 1);
+	this.animationU = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 192, 64, 64, 0.2, 4, true, 1);
+	this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, 1);
+	this.direction = 1;//1R 2L 3U 4D
+	this.x = 35;
+    this.y = 25;
+    this.game = game;
+    this.ctx = game.ctx;
+}
+
+attackDude.prototype = new Entity();
+attackDude.prototype.constructor = attackDude;
+
+attackDude.prototype.draw = function (ctx) {
+	if(this.direction === 1){
+	this.animationR.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	}
+	if(this.direction === 2){
+	this.animationL.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	}
+	if(this.direction === 3){
+	this.animationU.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	}
+	if(this.direction === 4){
+	this.animationD.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	}
+	Entity.prototype.draw.call(this);
+}
+
+attackDude.prototype.update = function () {
+    if (this.x < 158 && this.y === 25){
+		this.direction = 1;
+		this.x += 1;
+	}else if (this.x === 158 && this.y < 150){
+		this.direction = 4;
+		this.y += 1;
+	}else if (this.x > 33 && this.y === 150){
+		this.direction = 2;
+		this.x -= 1;
+	}else if (this.x === 33 && this.y > 25){
+		this.direction = 3;
+		this.y -= 1;
+	}
+	Entity.prototype.update.call(this);
+}
+
+
 
 
 
@@ -187,74 +273,7 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
 	
 	//add attacker
-    var attacker = new attackDude(gameEngine, ASSET_MANAGER.getAsset("./img/Attack.png"));
+    var attacker = new attackDude(gameEngine);
     gameEngine.addEntity(attacker);
     gameEngine.start();
 });
-
-
-
-//add attacker
-function Animation(spriteSheet, frameWidth, frameHeight, sheetWidth, frameDuration, frames, loop, scale) {
-    this.spriteSheet = spriteSheet;
-    this.frameWidth = frameWidth;
-    this.frameDuration = frameDuration;
-    this.frameHeight = frameHeight;
-    this.sheetWidth = sheetWidth;
-    this.frames = frames;
-    this.totalTime = frameDuration * frames;
-    this.elapsedTime = 0;
-    this.loop = loop;
-    this.scale = scale;
-}
-
-Animation.prototype.drawFrame = function (tick, ctx, x, y) {
-    this.elapsedTime += tick;
-    if (this.isDone()) {
-        if (this.loop) this.elapsedTime = 0;
-    }
-    var frame = this.currentFrame();
-    var xindex = 0;
-    var yindex = 0;
-    xindex = frame % this.sheetWidth;
-    yindex = Math.floor(frame / this.sheetWidth);
-
-    ctx.drawImage(this.spriteSheet,
-                 xindex * this.frameWidth, yindex * this.frameHeight,  // source from sheet
-                 this.frameWidth, this.frameHeight,
-                 x, y,
-                 this.frameWidth * this.scale,
-                 this.frameHeight * this.scale);
-}
-
-Animation.prototype.currentFrame = function () {
-    return Math.floor(this.elapsedTime / this.frameDuration);
-}
-
-Animation.prototype.isDone = function () {
-    return (this.elapsedTime >= this.totalTime);
-}
-
-function attackDude(game, spritesheet) {
-    Entity.call(this, game, 0, 0);
-	this.animation = new Animation(spritesheet, 536, 495, 10, 0.10, 10, true, 0.2);
-	this.x = 5;
-    this.y = 400;
-    this.speed = 100;
-    this.game = game;
-    this.ctx = game.ctx;
-    //console.log(this.ctx);
-}
-
-attackDude.prototype = new Entity();
-attackDude.prototype.constructor = attackDude;
-
-attackDude.prototype.draw = function () {
-	this.animation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
-}
-
-attackDude.prototype.update = function () {
-    if (this.animation.elapsedTime < this.animation.totalTime * 8 / 14)
-        this.x += this.game.clockTick * this.speed;
-    if (this.x > 800) this.x = -230;
-}
