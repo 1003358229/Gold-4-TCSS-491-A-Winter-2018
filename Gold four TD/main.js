@@ -93,31 +93,31 @@ GameBoard.prototype.update = function () {
         this.player = 1;
 		this.canBuy = true;
     }
-	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 2 && this.money >= 100) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 3 && this.money >= 100) {
         this.player = 2;
 		this.canBuy = true;
     }
-	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 3 && this.money  >= 75) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 5 && this.money  >= 75) {
         this.player = 3;
 		this.canBuy = true;
     }
-	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 4 && this.money >= 125) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 7 && this.money >= 125) {
         this.player = 4;
 		this.canBuy = true;
     }
-	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 5 && this.money >= 150) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 9 && this.money >= 150) {
         this.player = 5;
 		this.canBuy = true;
     }
-	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 6 && this.money  >= 275) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 11 && this.money  >= 275) {
         this.player = 6;
 		this.canBuy = true;
     }
-		if (this.game.click && this.game.click.x === 20 && this.game.click.y === 7 && this.money >= 150) {
+		if (this.game.click && this.game.click.x === 20 && this.game.click.y === 13 && this.money >= 150) {
         this.player = 7;
 		this.canBuy = true;
     }
-	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 8 && this.money >= 350) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 15 && this.money >= 350) {
         this.player = 8;
 		this.canBuy = true;
     }
@@ -139,33 +139,33 @@ GameBoard.prototype.draw = function (ctx) {
 	ctx.strokeText("Money: " + this.money, 420, 40); 
 	ctx.strokeStyle = "white";
 	ctx.strokeText("Towers", 865, 40); 
-	ctx.strokeText("$50", 930, 110); 
-	ctx.strokeText("$100", 930, 150); 
-	ctx.strokeText("$75", 930, 190); 
-	ctx.strokeText("$125", 930, 230); 
-	ctx.strokeText("$150", 930, 270); 
-	ctx.strokeText("$275", 930, 310); 
-	ctx.strokeText("$150", 930, 350); 
-	ctx.strokeText("$350", 930, 390); 
+	ctx.strokeText("$50", 930, 120); 
+	ctx.strokeText("$100", 930, 200); 
+	ctx.strokeText("$75", 930, 280); 
+	ctx.strokeText("$125", 930, 360); 
+	ctx.strokeText("$150", 930, 440); 
+	ctx.strokeText("$275", 930, 520); 
+	ctx.strokeText("$150", 930, 600); 
+	ctx.strokeText("$350", 930, 680); 
  
 	
 	//Draw tower menu
 	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), 20 * size + offset, size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower2.png"), 20 * size + offset, 2 * size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), 20 * size + offset, 3 * size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower4.png"), 20 * size + offset, 4 * size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower5.png"), 20 * size + offset, 5 * size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower6.png"), 20 * size + offset, 6 * size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower7.png"), 20 * size + offset, 7 * size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower8.png"), 20 * size + offset, 8 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower2.png"), 20 * size + offset, 3 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), 20 * size + offset, 5 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower4.png"), 20 * size + offset, 7 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower5.png"), 20 * size + offset, 9 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower6.png"), 20 * size + offset, 11 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower7.png"), 20 * size + offset, 13 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower8.png"), 20 * size + offset, 15 * size + offset - 20, 40, 60);
 
 
 
     for (var i = 0; i < 18; i++) {
         for (var j = 0; j < 18; j++) {
-			// // shows the grid of each image placement
-             ctx.strokeStyle = "Green";
-             ctx.strokeRect(i * size + offset, j * size + offset, size, size);
+			// shows the grid of each image placement
+            //ctx.strokeStyle = "Green";
+            //ctx.strokeRect(i * size + offset, j * size + offset, size, size);
             if (this.board[i][j] === 1) {
 				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), i * size + offset, j * size + offset - 20, 40, 60);
             }
@@ -267,7 +267,9 @@ function attackDude(game) {
 	this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, 1);
 	this.direction = 1;//1R 2L 3U 4D
 	this.x = 35;
-    this.y = 25;
+    this.y = 235;
+	this.rannum =  1;
+	//this.rannum =  Math.round(Math.random());
     this.game = game;
     this.ctx = game.ctx;
 }
@@ -292,19 +294,25 @@ attackDude.prototype.draw = function (ctx) {
 }
 
 attackDude.prototype.update = function () {
-    if (this.x < 158 && this.y === 25){
+    if (this.x < 157 && this.y === 235){
 		this.direction = 1;
 		this.x += 1;
-	}else if (this.x === 158 && this.y < 150){
-		this.direction = 4;
-		this.y += 1;
-	}else if (this.x > 33 && this.y === 150){
-		this.direction = 2;
-		this.x -= 1;
-	}else if (this.x === 33 && this.y > 25){
+	}
+	
+	if (this.rannum === 0 && this.x > 150){
 		this.direction = 3;
 		this.y -= 1;
 	}
+	if (this.rannum === 1 && this.x >= 157){
+		this.direction = 4;
+		this.y += 1;
+	}
+	if(this.rannum === 1 && this.y >= 310) {
+		this.direction = 1;
+		this.x += 1;
+		this.y -= 1;
+	}
+	
 	Entity.prototype.update.call(this);
 }
 
