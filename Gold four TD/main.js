@@ -9,7 +9,7 @@
 function GameBoard(game) {
     Entity.call(this, game, 20, 20);
 	this.score = 0;
-	this.money = 1000;
+	this.money = 100000000000000;
     this.grid = false;
     this.canBuy = true;
     this.player = 0;
@@ -162,11 +162,16 @@ ASSET_MANAGER.downloadAll(function () {
     //console.log(gameboard);
     gameEngine.addEntity(gameboard);
     gameEngine.init(ctx);
+	
+	//add attacker
     var attacker = new attackDude(gameEngine, ASSET_MANAGER.getAsset("./img/Attack.png"));
     gameEngine.addEntity(attacker);
     gameEngine.start();
 });
 
+
+
+//add attacker
 function Animation(spriteSheet, frameWidth, frameHeight, sheetWidth, frameDuration, frames, loop, scale) {
     this.spriteSheet = spriteSheet;
     this.frameWidth = frameWidth;
