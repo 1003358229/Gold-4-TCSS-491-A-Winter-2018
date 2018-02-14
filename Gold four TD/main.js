@@ -9,9 +9,10 @@
 function GameBoard(game) {
     Entity.call(this, game, 20, 20);
 	this.score = 0;
-	this.money = 100000000000000;
+	this.money = 100;
     this.grid = false;
     this.canBuy = true;
+	this.purchaes_and_placed = false;
     this.player = 0;
     this.board = [];
     for (var i = 0; i < 22; i++) {
@@ -38,39 +39,40 @@ GameBoard.prototype.getPlaceTower = function() {
 
 GameBoard.prototype.update = function () {
     if (this.game.click 
-		&& this.game.click.x > -1 && this.game.click.x < 18 && this.game.click.y > -1 && this.game.click.y < 18 
+		&& this.game.click.x > -1 && this.game.click.x < 18 
+		&& this.game.click.y > -1 && this.game.click.y < 18 
 		&& this.board[this.game.click.x][this.game.click.y] === 0) {
 
-        
-		var canAfford = false;
-        
+        //changed from false to true to avoid bug
+		var canAfford = true;
+        //I want to not display the shadow after a success purchase of tower
+		purchaes_and_placed = false;
 
         //Using this.canBuy to determine if to draw shadow and if you can place another tower
         //TODO: modify this.canBuy outside of click loop to fix small bug where you
         //have less than price of current tower but haven't clicked since then 
         //Money subtraction
+		//put all four statement in to one
 		if (this.player === 1 && this.money - 100 >= 0) {
             this.money -= 100;
-            canAfford = true;
-		}
-		if (this.player === 2 && this.money - 50 >= 0) {
+		} else if (this.player === 2 && this.money - 50 >= 0) {
             this.money -= 50;
-            canAfford = true;
-		}
-		if (this.player === 3 && this.money - 75 >= 0) {
+		} else if (this.player === 3 && this.money - 75 >= 0) {
             this.money -= 75;
-            canAfford = true;
-        }	
-
-        //TODO: fix to be accurate to specific tower: EX: start with 100 use 75 tower, have 25 left but cant place
-        if(this.money == 0) {
-            this.canBuy = false;
+        }else{
+			canAfford = false;
         }
+
+        // //TODO: fix to be accurate to specific tower: EX: start with 100 use 75 tower, have 25 left but cant place
+        // if(this.money == 0) {
+            // this.canBuy = false;
+        // }
         
         if(canAfford) {
             this.board[this.game.click.x][this.game.click.y] = this.player;
-        }
-        else {
+			purchaes_and_placed = true;
+			this.player = 0;
+        } else {
             this.canBuy = false;
         }
     }
@@ -86,6 +88,19 @@ GameBoard.prototype.update = function () {
 	if (this.game.click && this.game.click.x === 21 && this.game.click.y === 3) {
         this.player = 3;
     }
+	//decide if the tower can be selected
+	if (this.player === 1 && this.money - 100 >= 0) {
+		this.canBuy = true;
+	} else if (this.player === 2 && this.money - 50 >= 0) {
+		this.canBuy = true;
+	} else if (this.player === 3 && this.money - 75 >= 0) {
+		this.canBuy = true;
+	}else{
+		this.canBuy = false;
+	}
+	
+
+	
     Entity.prototype.update.call(this);
 }
 
@@ -127,15 +142,29 @@ GameBoard.prototype.draw = function (ctx) {
     }
 
     // draw mouse shadow
-    if (this.game.mouse && this.canBuy) {
-        ctx.save();
+    if (this.game.mouse && this.canBuy && !this.purchaes_and_placed) {
+		// //testing console log
+		// var x = this.purchaes_and_placed.toString();
+		// var y = this.canBuy.toString();
+		// var z = this.game.mouse.toString();
+		// console.log(x, y, z);
+		ctx.save();
         ctx.globalAlpha = 0.25;
         if(this.player === 1) ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
         if(this.player === 2)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
 		if(this.player === 3)  ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), this.game.mouse.x * size + offset, this.game.mouse.y * size + offset - 20, 40, 60);
         ctx.restore();
-    }
-
+	}
+    // }else{
+		// // testing console log
+		// var a = this.purchaes_and_placed.toString();
+		// var b = this.canBuy.toString();
+		// // var c = this.game.mouse.toString();
+		// console.log(a, b);
+		// console.log(2);
+	// }
+	
+	
 }
 
 
