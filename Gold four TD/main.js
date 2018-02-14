@@ -9,7 +9,7 @@
 function GameBoard(game) {
     Entity.call(this, game, 20, 20);
 	this.score = 0;
-	this.money = 100;
+	this.money = 100000;
     this.grid = false;
     this.canBuy = true;
 	this.purchaes_and_placed = false;
@@ -53,11 +53,11 @@ GameBoard.prototype.update = function () {
         //have less than price of current tower but haven't clicked since then 
         //Money subtraction
 		//put all four statement in to one
-		if (this.player === 1 && this.money - 100 >= 0) {
+		if (this.player === 1 && this.money >= 100) {
             this.money -= 100;
-		} else if (this.player === 2 && this.money - 50 >= 0) {
+		} else if (this.player === 2 && this.money >= 50) {
             this.money -= 50;
-		} else if (this.player === 3 && this.money - 75 >= 0) {
+		} else if (this.player === 3 && this.money >= 75) {
             this.money -= 75;
         }else{
 			canAfford = false;
@@ -79,26 +79,18 @@ GameBoard.prototype.update = function () {
 
 
 	//Select tower
-	if (this.game.click && this.game.click.x === 21 && this.game.click.y === 1) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 1 && this.money >= 100) {
         this.player = 1;
+		this.canBuy = true;
     }
-	if (this.game.click && this.game.click.x === 21 && this.game.click.y === 2) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 2 && this.money >= 50) {
         this.player = 2;
+		this.canBuy = true;
     }
-	if (this.game.click && this.game.click.x === 21 && this.game.click.y === 3) {
+	if (this.game.click && this.game.click.x === 20 && this.game.click.y === 3 && this.money  >= 75) {
         this.player = 3;
+		this.canBuy = true;
     }
-	//decide if the tower can be selected
-	if (this.player === 1 && this.money - 100 >= 0) {
-		this.canBuy = true;
-	} else if (this.player === 2 && this.money - 50 >= 0) {
-		this.canBuy = true;
-	} else if (this.player === 3 && this.money - 75 >= 0) {
-		this.canBuy = true;
-	}else{
-		this.canBuy = false;
-	}
-	
 
 	
     Entity.prototype.update.call(this);
@@ -116,11 +108,14 @@ GameBoard.prototype.draw = function (ctx) {
 	ctx.strokeText("Money: " + this.money, 420, 40); 
 	ctx.strokeStyle = "white";
 	ctx.strokeText("Towers", 865, 40); 
+	ctx.strokeText("100", 930, 110); 
+	ctx.strokeText("50", 930, 150); 
+	ctx.strokeText("75", 930, 190); 
 	
 	//Draw tower menu
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), 21 * size + offset, size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), 21 * size + offset, 2 * size + offset - 20, 40, 60);
-	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), 21 * size + offset, 3 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/black.png"), 20 * size + offset, size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/white.png"), 20 * size + offset, 2 * size + offset - 20, 40, 60);
+	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), 20 * size + offset, 3 * size + offset - 20, 40, 60);
 
 
     for (var i = 0; i < 22; i++) {
@@ -161,7 +156,6 @@ GameBoard.prototype.draw = function (ctx) {
 		// var b = this.canBuy.toString();
 		// // var c = this.game.mouse.toString();
 		// console.log(a, b);
-		// console.log(2);
 	// }
 	
 	
