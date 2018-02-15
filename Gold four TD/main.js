@@ -6,13 +6,15 @@
 //TCSS491 2018
 
 //Gameboard
+
 function GameBoard(game) {
+
     Entity.call(this, game, 20, 20);
 	this.radius_x = 0;
 	this.radius_y = 0;
 	this.display_radius = false;
 	this.score = 0;
-	this.money = 100000;
+	this.money = 1000;
     this.grid = false;
     this.canBuy = true;
 	this.purchaes_and_placed = false;
@@ -207,7 +209,7 @@ GameBoard.prototype.draw = function (ctx) {
             }
         }
     }
-
+	
     // draw mouse shadow
     if (this.game.mouse && this.canBuy && !this.purchaes_and_placed) {
 
@@ -232,9 +234,8 @@ GameBoard.prototype.draw = function (ctx) {
 		ctx.strokeStyle="red";
 		ctx.stroke();
 	}
+
 }
-
-
 
 
 
