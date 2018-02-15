@@ -497,14 +497,13 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 
     //repeatly add attacker
-    timesRun += 1;
     var interval = setInterval(function () {
         var attacker = new attackDude(gameEngine);
         gameEngine.addEntity(attacker);
         timesRun += 1;
-        if (timesRun === 3) {//count of enemy
+        if (timesRun === 5) {//count of enemy
             clearInterval(interval);
         }
-    }, 3000); 
+    }, 2000); 
 
 });
