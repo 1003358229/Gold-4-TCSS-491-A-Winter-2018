@@ -89,7 +89,12 @@ GameBoard.prototype.update = function () {
 
             //place down the tower
 			if(canAfford) {
-				this.board[this.game.click.x][this.game.click.y] = this.player;
+                this.board[this.game.click.x][this.game.click.y] = this.player;
+                //
+                var newTower = new tower1(gameEngine,this.game.click.x,this.game.click.y);
+
+                gameEngine.addEntity(newTower);
+
 				purchaes_and_placed = true;
 				this.player = 0;
 			} else {
@@ -181,38 +186,38 @@ GameBoard.prototype.draw = function (ctx) {
 	ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower8.png"), 20 * size + offset, 15 * size + offset - 20, 40, 60);
 
 
-    //draw all towers on map
-    for (var i = 0; i < 18; i++) {
-        for (var j = 0; j < 18; j++) {
-			// shows the grid of each image placement
-            //ctx.strokeStyle = "Green";
-            //ctx.strokeRect(i * size + offset, j * size + offset, size, size);
-            if (this.board[i][j] === 1) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), i * size + offset, j * size + offset - 20, 40, 60);
-            }
-            if (this.board[i][j] === 2) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower2.png"), i * size + offset, j * size + offset -20, 40, 60);
-            }
-			if (this.board[i][j] === 3) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), i * size + offset + 3, j * size + offset - 20, 40, 60);
-            }
-			if (this.board[i][j] === 4) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower4.png"), i * size + offset, j * size + offset - 20, 40, 60);
-            }
-            if (this.board[i][j] === 5) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower5.png"), i * size + offset, j * size + offset -20, 40, 60);
-            }
-			if (this.board[i][j] === 6) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower6.png"), i * size + offset + 3, j * size + offset - 20, 40, 60);
-            }
-			if (this.board[i][j] === 7) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower7.png"), i * size + offset, j * size + offset - 20, 40, 60);
-            }
-            if (this.board[i][j] === 8) {
-				ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower8.png"), i * size + offset, j * size + offset -20, 40, 60);
-            }
-        }
-    }
+    // //draw all towers on map
+    // for (var i = 0; i < 18; i++) {
+    //     for (var j = 0; j < 18; j++) {
+	// 		// shows the grid of each image placement
+    //         //ctx.strokeStyle = "Green";
+    //         //ctx.strokeRect(i * size + offset, j * size + offset, size, size);
+    //         if (this.board[i][j] === 1) {
+	// 			ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), i * size + offset, j * size + offset - 20, 40, 60);
+    //         }
+    //         if (this.board[i][j] === 2) {
+	// 			ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower2.png"), i * size + offset, j * size + offset -20, 40, 60);
+    //         }
+	// 		if (this.board[i][j] === 3) {
+	// 			ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower3.png"), i * size + offset + 3, j * size + offset - 20, 40, 60);
+    //         }
+	// 		if (this.board[i][j] === 4) {
+	// 			ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower4.png"), i * size + offset, j * size + offset - 20, 40, 60);
+    //         }
+    //         if (this.board[i][j] === 5) {
+	// 			ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower5.png"), i * size + offset, j * size + offset -20, 40, 60);
+    //         }
+	// 		if (this.board[i][j] === 6) {
+	// 			ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower6.png"), i * size + offset + 3, j * size + offset - 20, 40, 60);
+    //         }
+	// 		if (this.board[i][j] === 7) {
+	// 			ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower7.png"), i * size + offset, j * size + offset - 20, 40, 60);
+    //         }
+    //         if (this.board[i][j] === 8) {
+	// 			ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower8.png"), i * size + offset, j * size + offset -20, 40, 60);
+    //         }
+    //     }
+    // }
 	
     // draw mouse shadow with tower and its radius
     if (this.game.mouse && this.canBuy && !this.purchaes_and_placed) {
@@ -294,12 +299,55 @@ Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
 }
 
+function tower1(game,x,y) {
+    this.boardX = x;
+    this.boardY = y;
+    this.game = game;
+    this.ctx = game.ctx;
+    this.towerRange = 2; //Can attack 4x4 square with tower in center.
+
+}
+
+tower1.prototype = new Entity();
+tower1.prototype.constructor = tower1;
+
+tower1.prototype.draw = function (ctx) {
+    var size = 41.67;
+    var offset = 45;
+    var i = this.boardX;
+    var j = this.boardY;
+    this.attacker = 0;
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), i * size + offset, j * size + offset - 20, 40, 60);
+};
+
+tower1.prototype.update = function(ctx) {
+    Entity.prototype.update.call(this);
+    for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
+        if (this != ent && ent.attacker == 1) { //Entity is an enemy, should check to see if it is in range.
+            var isInrange = this.inRange(ent.boardX,ent.boardY);
+            if(isInrange) {
+                //console.log("IN");
+            }
+        };
+    };
+
+};
+
+tower1.prototype.inRange = function(x,y) {
+    console.log(x,y);
+    if(x<= this.boardX + this.towerRange && x >= this.boardX - this.towerRange && x<= this.boardY + this.towerRange && y>= this.boardY - this.towerRange) {
+        return true;
+    }
+}
+
+
 //add attacker
 function attackDude(game) {
-	this.animationR = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 128, 64, 64, 0.2, 4, true, 1);
-	this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, 1);
-	this.animationU = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 192, 64, 64, 0.2, 4, true, 1);
-	this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, 1);
+	this.animationR = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 128, 64, 64, 0.2, 4, true, 0.8);
+	this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, 0.8);
+	this.animationU = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 192, 64, 64, 0.2, 4, true, 0.8);
+	this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, 0.8);
     this.direction = 1;//1R 2L 3U 4D
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/cannonball.png"), 0, 0, 420, 420, 0.2, 1, true, 0.3);
     this.ball_x = 0;
@@ -311,15 +359,17 @@ function attackDude(game) {
     //this.y = 235;//offset x = 35 y = 25 this.size = 41.67
 	//this.rannum =  1;
 	// this.rannum =  Math.round(Math.random());
-    this.x_offset = 33;
-    this.y_offset = 25;
+    this.x_offset = 45;
+    this.y_offset = 45;
     this.x = this.x_offset;
     this.y = this.y_offset;
-    this.size = 41.67
+    this.size = 41.67;
     this.offset = 45;
-
+    this.attacker = 1;
     this.game = game;
     this.ctx = game.ctx;
+    this.boardX = 0;
+    this.boardY = 0;
 }
 
 attackDude.prototype = new Entity();
@@ -359,6 +409,25 @@ attackDude.prototype.draw = function (ctx) {
 	if(this.direction === 4){
 	    this.animationD.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
+
+    ctx.beginPath();
+    ctx.lineWidth="6";
+    ctx.strokeStyle="red";
+    //ctx.rect(this.x,this.y,41.67,41.67);
+    ctx.rect(this.x,this.y,1,1);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.lineWidth="1";
+    ctx.strokeStyle="red";
+    ctx.rect(this.x,this.y,64,64);
+    //console.log(this.x,this.y);
+    //ctx.rect(this.x,this.y,1,1);
+    ctx.stroke();
+
+
+
+
     if (this.fire) {
         this.animation.drawFrame(this.game.clockTick, ctx, this.ball_x, this.ball_y);
         ctx.beginPath();
@@ -389,38 +458,49 @@ attackDude.prototype.update = function () {
 	//	this.y -= 1;
 	//}
 
-    //walk in the square for now
-    //walk to 5,1
+    // walk in the square for now
+    // walk to 5,1
     if (this.x < Math.ceil(this.x_offset + this.size * 5)
         && this.y === this.y_offset) {
         this.direction = 1;
-        this.x += 1;
+        this.x += 0.25;
     //walk to 5,4
     } else if (this.x === Math.ceil(this.x_offset + this.size * 5)
         && this.y < Math.ceil(this.y_offset + this.size * 4)) {
         this.direction = 4;
-        this.y += 1;
+        this.y +=0.25;
     //walk to 0,4
     } else if (this.x > this.x_offset
         && this.y === Math.ceil(this.y_offset + this.size * 4)) {
         this.direction = 2;
-        this.x -= 1;
+        this.x -= 0.25;
     //walk to 0,0
     } else if (this.x === this.x_offset && this.y > this.y_offset) {
         this.direction = 3;
-        this.y -= 1;
+        this.y -= 0.25;
     }
     
-    var ent = this.game.entities[0];
-    for (var i = 0; i < 18; i++) {
-        for (var j = 0; j < 18; j++) {
-            if (ent.board[i][j] != 0 && this.collide(ent, i, j)) {
-                this.fire = true;
-                this.ball_x = this.x;
-                this.ball_y = this.y;
-            }
-        }
+    // var ent = this.game.entities[0];
+    // for (var i = 0; i < 18; i++) {
+    //     for (var j = 0; j < 18; j++) {
+    //         if (ent.board[i][j] != 0 && this.collide(ent, i, j)) {
+    //             this.fire = true;
+    //             this.ball_x = this.x;
+    //             this.ball_y = this.y;
+    //         }
+    //     }
+    // }
+
+    var changedX =  Math.ceil((this.x - 45)/41.67);
+    if(changedX != this.boardX) {
+        this.boardX = changedX;
     }
+    var changedY =  Math.ceil((this.y - 45)/41.67);
+    if(changedY != this.boardY) {
+        this.boardY = changedY;
+    }
+
+    //console.log(this.boardX,this.boardY);
 
 	
 	Entity.prototype.update.call(this);
@@ -476,11 +556,12 @@ ASSET_MANAGER.queueDownload("./img/tower8.png");
 ASSET_MANAGER.queueDownload("./img/Attack.png");
 ASSET_MANAGER.queueDownload("./img/cannonball.png");
 
+
+var gameEngine = new GameEngine();
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
-    var gameEngine = new GameEngine();
     var gameboard = new GameBoard(gameEngine);
     console.log("GAME ENGINE " + gameEngine);
     console.log(gameboard);
@@ -497,13 +578,13 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 
     //repeatly add attacker
-    var interval = setInterval(function () {
-        var attacker = new attackDude(gameEngine);
-        gameEngine.addEntity(attacker);
-        timesRun += 1;
-        if (timesRun === 5) {//count of enemy
-            clearInterval(interval);
-        }
-    }, 2000); 
+    // var interval = setInterval(function () {
+    //     var attacker = new attackDude(gameEngine);
+    //     gameEngine.addEntity(attacker);
+    //     timesRun += 1;
+    //     if (timesRun === 5) {//count of enemy
+    //         clearInterval(interval);
+    //     }
+    // }, 2000); 
 
 });
