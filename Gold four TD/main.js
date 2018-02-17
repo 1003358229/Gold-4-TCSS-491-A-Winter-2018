@@ -344,8 +344,8 @@ function attackDude(game) {
     this.direction = 1;//1R 2L 3U 4D
     this.x_offset = 39;
     this.y_offset = 35;
-    this.x = this.x_offset;
-    this.y = this.y_offset;
+    this.x = 40;
+    this.y = 235;
     this.size = 41.67;
     this.offset = 45;
     this.attacker = 1;
@@ -354,6 +354,7 @@ function attackDude(game) {
     this.boardX = 0;
     this.boardY = 0;
 	this.health = 500;
+	this.rannum = 1;
 }
 
 attackDude.prototype = new Entity();
@@ -422,6 +423,8 @@ attackDude.prototype.update = function () {
 
     // walk in the square for now
     // walk to 4,0
+	/*
+	this.attacker.boardX = 5;
     if (this.x < Math.ceil(this.x_offset + this.size * 4)
         && this.y === this.y_offset) {
         this.direction = 1;
@@ -449,7 +452,26 @@ attackDude.prototype.update = function () {
     var changedY =  Math.ceil((this.y - this.offset) / this.size);
     if(changedY != this.boardY) {
         this.boardY = changedY;
-    }
+    } */
+	   if (this.x < 157 && this.y === 235){
+		this.direction = 1;
+		this.x += 1;
+	}
+	
+	if (this.rannum === 0 && this.x > 150){
+		this.direction = 3;
+		this.y -= 1;
+	}
+	if (this.rannum === 1 && this.x >= 157){
+		this.direction = 4;
+		this.y += 1;
+	}
+	if(this.rannum === 1 && this.y >= 310) {
+		this.direction = 1;
+		this.x += 1;
+		this.y -= 1;
+}
+	
 	
 	Entity.prototype.update.call(this);
 }
@@ -488,6 +510,7 @@ ASSET_MANAGER.downloadAll(function () {
     //add attacker
     var attacker = new attackDude(gameEngine);
     gameEngine.addEntity(attacker);
+	
     var timesRun = 1;
 
     gameEngine.start();
