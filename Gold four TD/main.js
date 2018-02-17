@@ -141,9 +141,11 @@ GameBoard.prototype.draw = function (ctx) {
 	
 	//Score and money
 	ctx.font = "25px Arial";
-	ctx.strokeStyle = "white";
-	ctx.strokeText("Score: " + this.score, 45, 40); 
-	ctx.strokeText("Money: " + this.money, 420, 40); 
+
+	ctx.fillStyle = 'white';
+	ctx.fillText("Score: " + this.score, 45, 40); 
+	ctx.fillText("Money: " + this.money, 420, 40); 
+
 	
 	ctx.strokeText("Towers", 865, 40); 
 	ctx.strokeText("$50", 930, 120); 
@@ -397,11 +399,21 @@ attackDude.prototype.draw = function (ctx) {
             };
         };
     }
+	
+	// Game over message
+	if(this.x > 745) {
+		ctx.font = "75px Arial";
+		ctx.lineWidth = 8;
+		ctx.strokeStyle = "black";
+		ctx.strokeText("Game Over ", 250, 400); 
+		ctx.fillStyle = 'white';
+		ctx.fillText("Game Over ", 250, 400);
+	}
     
 
 
 	ctx.restore();
-	
+	/*
     //red circle around dog
     ctx.beginPath();
     ctx.lineWidth="6";
@@ -413,7 +425,7 @@ attackDude.prototype.draw = function (ctx) {
     ctx.rect(this.x + 6, this.y + 10, this.size, this.size);
     ctx.stroke();
 	
-
+*/
 	Entity.prototype.draw.call(this);
 }
 
@@ -437,6 +449,8 @@ attackDude.prototype.update = function () {
         this.direction = 1;
         this.x += 0.25 * 4;
     }
+	
+
     ////walk to 0,0
     //} else if (this.x === this.x_offset && this.y > this.y_offset) {
     //    this.direction = 3;
@@ -523,6 +537,6 @@ ASSET_MANAGER.downloadAll(function () {
         if (timesRun === 5) {//count of enemy
             clearInterval(interval);
         }
-    }, 1000); 
+    }, 2000); 
 
 });
