@@ -264,7 +264,7 @@ function tower1(game,x,y) {
     this.y;
     this.size = 41.67;
     this.offset = 45;
-    this.attacker = 0;
+    //this.attacker = 0;
     this.fire = false;
     this.fire_distance = 0;
     this.fireRate = 25;
@@ -281,8 +281,6 @@ tower1.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset(joined), this.boardX * this.size + this.offset, this.boardY * this.size + this.offset - 20, 40, 60);
     if (this.fire){
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-	
-
     }
     Entity.prototype.draw.call(this);
 };
@@ -295,7 +293,6 @@ tower1.prototype.update = function (ctx) {
             isInrange = this.inRange(ent.boardX, ent.boardY);
             if (isInrange) {
                 this.fire = true;
-				
                 break;
             } else {
                 this.fire = false;
@@ -308,27 +305,31 @@ tower1.prototype.update = function (ctx) {
             - this.fire_distance * Math.abs((ent.x + 6) - (this.boardX * this.size + this.offset)) / this.fireRate
             : this.x = (this.boardX * this.size + this.offset)
             + this.fire_distance * Math.abs((ent.x + 6) - (this.boardX * this.size + this.offset)) / this.fireRate;
-
-
+        
         (ent.y + 10) < (this.boardY * this.size + this.offset)
             ? this.y = (this.boardY * this.size + this.offset)
             - this.fire_distance * Math.abs((ent.y + 10) - (this.boardY * this.size + this.offset)) / this.fireRate
             : this.y = (this.boardY * this.size + this.offset)
             + this.fire_distance * Math.abs((ent.y + 10) - (this.boardY * this.size + this.offset)) / this.fireRate;
-			ent.health = ent.health - 1;
+
+        ent.health = ent.health - 1;
+
     }
+
     if (this.fire_distance < this.fireRate) {
         this.fire_distance++;
     } else {
         this.fire_distance = 0;
-        //pause for a loop
     }
 
     Entity.prototype.update.call(this);
 };
 
 tower1.prototype.inRange = function (x, y) {
-    return x <= this.boardX + this.towerRange && x >= this.boardX - this.towerRange && x <= this.boardY + this.towerRange && y >= this.boardY - this.towerRange;
+    return x <= this.boardX + this.towerRange
+        && x >= this.boardX - this.towerRange
+        && y <= this.boardY + this.towerRange
+        && y >= this.boardY - this.towerRange;
 }
 
 
@@ -340,21 +341,21 @@ function attackDude(game) {
     this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
     this.animationU = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
     this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
-	this.animationDie = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 0, 0, 0, 0, true, this.scale);
+	//this.animationDie = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 0, 0, 0, 0, true, this.scale);
     this.direction = 1;//1R 2L 3U 4D
-    this.x_offset = 39;
-    this.y_offset = 35;
-    this.x = 40;
-    this.y = 235;
     this.size = 41.67;
     this.offset = 45;
+    this.x_offset = 39;
+    this.y_offset = 35;
+    this.x = this.x_offset;
+    this.y = Math.ceil(this.y_offset + this.size * 5);
     this.attacker = 1;
     this.game = game;
     this.ctx = game.ctx;
     this.boardX = 0;
     this.boardY = 0;
 	this.health = 500;
-	this.rannum = 1;
+	//this.rannum = 1;
 }
 
 attackDude.prototype = new Entity();
@@ -370,7 +371,6 @@ attackDude.prototype.draw = function (ctx) {
 		}
 		if(this.health <= 0){
 			this.attacker = 0;
-
 		}
 	}
 	if(this.direction === 2){
@@ -403,7 +403,6 @@ attackDude.prototype.draw = function (ctx) {
 	ctx.restore();
 	
     //red circle around dog
-	/*
     ctx.beginPath();
     ctx.lineWidth="6";
     ctx.strokeStyle="red";
@@ -413,7 +412,7 @@ attackDude.prototype.draw = function (ctx) {
     ctx.strokeStyle="red";
     ctx.rect(this.x + 6, this.y + 10, this.size, this.size);
     ctx.stroke();
-	*/
+	
 
 	Entity.prototype.draw.call(this);
 }
@@ -422,55 +421,56 @@ attackDude.prototype.draw = function (ctx) {
 attackDude.prototype.update = function () {
 
     // walk in the square for now
-    // walk to 4,0
-	/*
-	this.attacker.boardX = 5;
-    if (this.x < Math.ceil(this.x_offset + this.size * 4)
-        && this.y === this.y_offset) {
+    // walk to 3,5
+    if (this.x < Math.ceil(this.x_offset + this.size * 3)
+        && this.y === Math.ceil(this.y_offset + this.size * 5)) {
         this.direction = 1;
         this.x += 0.25 * 4;
-    //walk to 4,4
-    } else if (this.x === Math.ceil(this.x_offset + this.size * 4)
-        && this.y < Math.ceil(this.y_offset + this.size * 4)) {
+        //walk to 3,7
+    } else if (this.x === Math.ceil(this.x_offset + this.size * 3)
+        && this.y < Math.ceil(this.y_offset + this.size * 7)) {
         this.direction = 4;
-        this.y +=0.25 * 4;
-    //walk to 0,4
-    } else if (this.x > this.x_offset
-        && this.y === Math.ceil(this.y_offset + this.size * 4)) {
-        this.direction = 2;
-        this.x -= 0.25 * 4;
-    //walk to 0,0
-    } else if (this.x === this.x_offset && this.y > this.y_offset) {
-        this.direction = 3;
-        this.y -= 0.25 * 4;
+        this.y += 0.25 * 4;
+        //walk to 17,7
+    } else if (this.x < Math.ceil(this.x_offset + this.size * 17)
+        && this.y === Math.ceil(this.y_offset + this.size * 7)) {
+        this.direction = 1;
+        this.x += 0.25 * 4;
     }
+    ////walk to 0,0
+    //} else if (this.x === this.x_offset && this.y > this.y_offset) {
+    //    this.direction = 3;
+    //    this.y -= 0.25 * 4;
+    //}
+    
 
-    var changedX =  Math.ceil((this.x - this.offset) / this.size);
-    if(changedX != this.boardX) {
+ //   if (this.x < Math.ceil(this.x_offset + this.size * 3) && this.y === this.y_offset + this.size * 5) {
+	//	this.direction = 1;
+	//	this.x += 1;
+	//}
+	
+ //   if (this.rannum === 0 && this.x > Math.ceil(this.x_offset + this.size * 7)){
+	//	this.direction = 3;
+	//	this.y -= 1;
+	//}
+	//if (this.rannum === 1 && this.x >= Math.ceil(this.x_offset + this.size * 3)){
+	//	this.direction = 4;
+	//	this.y += 1;
+	//}
+ //   if (this.rannum === 1 && this.y >= Math.ceil(this.y_offset + this.size * 7)){
+	//	this.direction = 1;
+	//	this.x += 1;
+ //       this.y -= 1;
+ //   }
+
+    var changedX = Math.ceil((this.x - this.offset) / this.size);
+    if (changedX != this.boardX) {
         this.boardX = changedX;
     }
-    var changedY =  Math.ceil((this.y - this.offset) / this.size);
-    if(changedY != this.boardY) {
+    var changedY = Math.ceil((this.y - this.offset) / this.size);
+    if (changedY != this.boardY) {
         this.boardY = changedY;
-    } */
-	   if (this.x < 157 && this.y === 235){
-		this.direction = 1;
-		this.x += 1;
-	}
-	
-	if (this.rannum === 0 && this.x > 150){
-		this.direction = 3;
-		this.y -= 1;
-	}
-	if (this.rannum === 1 && this.x >= 157){
-		this.direction = 4;
-		this.y += 1;
-	}
-	if(this.rannum === 1 && this.y >= 310) {
-		this.direction = 1;
-		this.x += 1;
-		this.y -= 1;
-}
+    } 
 	
 	
 	Entity.prototype.update.call(this);
