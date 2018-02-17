@@ -145,7 +145,7 @@ GameBoard.prototype.draw = function (ctx) {
 	ctx.fillStyle = 'white';
 	ctx.fillText("Score: " + this.score, 45, 40); 
 	ctx.fillText("Money: " + this.money, 420, 40); 
-
+	ctx.strokeStyle = "white";
 	
 	ctx.strokeText("Towers", 865, 40); 
 	ctx.strokeText("$50", 930, 120); 
@@ -316,6 +316,7 @@ tower1.prototype.update = function (ctx) {
             + this.fire_distance * Math.abs((ent.y + 10) - (this.boardY * this.size + this.offset)) / this.fireRate;
 
         ent.health = ent.health - 1;
+
     }
 
     if (this.fire_distance < this.fireRate) {
@@ -343,7 +344,8 @@ function attackDude(game) {
     this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
     this.animationU = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
     this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
-	//this.animationDie = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 0, 0, 0, 0, true, this.scale);
+	this.death = new Animation(ASSET_MANAGER.getAsset("./img/ex.png"), 0, 0, 128, 128, 0.1, 10, true, this.scale);
+	//spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, scale) 
     this.direction = 1;//1R 2L 3U 4D
     this.size = 41.67;
     this.offset = 45;
@@ -357,7 +359,6 @@ function attackDude(game) {
     this.boardX = 0;
     this.boardY = 0;
 	this.health = 500;
-	//this.rannum = 1;
 }
 
 attackDude.prototype = new Entity();
@@ -390,24 +391,30 @@ attackDude.prototype.draw = function (ctx) {
 			this.animationD.drawFrame(this.game.clockTick, ctx, this.x, this.y);
 		}
     }
-
     if (this.health <= 0) {
+		this.death.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+		var snd = new Audio("explosion.mp3"); // buffers automatically when created
+		snd.play();
+
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
-            if (this === ent) {
-                this.game.entities.splice(i, 1);
-            };
+          if (this === ent) {
+              this.game.entities.splice(i, 1);
+          };
         };
     }
 	
 	// Game over message
 	if(this.x > 745) {
+		ctx.save();
 		ctx.font = "75px Arial";
 		ctx.lineWidth = 8;
 		ctx.strokeStyle = "black";
 		ctx.strokeText("Game Over ", 250, 400); 
 		ctx.fillStyle = 'white';
 		ctx.fillText("Game Over ", 250, 400);
+
+		
 	}
     
 
@@ -428,6 +435,7 @@ attackDude.prototype.draw = function (ctx) {
 */
 	Entity.prototype.draw.call(this);
 }
+
 
 
 attackDude.prototype.update = function () {
@@ -506,6 +514,7 @@ ASSET_MANAGER.queueDownload("./img/tower7.png");
 ASSET_MANAGER.queueDownload("./img/tower8.png");
 ASSET_MANAGER.queueDownload("./img/Attack.png");
 ASSET_MANAGER.queueDownload("./img/cannonball.png");
+ASSET_MANAGER.queueDownload("./img/ex.png");
 
 
 var gameEngine = new GameEngine();
@@ -537,6 +546,6 @@ ASSET_MANAGER.downloadAll(function () {
         if (timesRun === 5) {//count of enemy
             clearInterval(interval);
         }
-    }, 2000); 
+    }, 3000); 
 
 });
