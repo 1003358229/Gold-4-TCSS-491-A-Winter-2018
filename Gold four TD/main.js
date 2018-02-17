@@ -287,6 +287,7 @@ tower1.prototype.draw = function (ctx) {
 
 tower1.prototype.update = function (ctx) {
     var isInrange;
+    this.fire = false;
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
         if (this != ent && ent.attacker == 1) { //Entity is an enemy, should check to see if it is in range.
@@ -313,7 +314,6 @@ tower1.prototype.update = function (ctx) {
             + this.fire_distance * Math.abs((ent.y + 10) - (this.boardY * this.size + this.offset)) / this.fireRate;
 
         ent.health = ent.health - 1;
-
     }
 
     if (this.fire_distance < this.fireRate) {
@@ -369,17 +369,11 @@ attackDude.prototype.draw = function (ctx) {
 			ctx.strokeText("Hp: " + this.health, this.x, this.y);
 			this.animationR.drawFrame(this.game.clockTick, ctx, this.x, this.y);
 		}
-		if(this.health <= 0){
-			this.attacker = 0;
-		}
 	}
 	if(this.direction === 2){
 		if(this.health > 0){
 			ctx.strokeText("Hp: " + this.health, this.x, this.y);
 			this.animationL.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-		}
-		if(this.health <= 0){
-			this.attacker = 0;
 		}
 	}
 	if(this.direction === 3){
@@ -387,19 +381,25 @@ attackDude.prototype.draw = function (ctx) {
 			ctx.strokeText("Hp: " + this.health, this.x, this.y);
 			this.animationU.drawFrame(this.game.clockTick, ctx, this.x, this.y);
 		}
-		if(this.health <= 0){
-			this.attacker = 0;
-		}
 	}
 	if(this.direction === 4){
 		if(this.health > 0){
 			ctx.strokeText("Hp: " + this.health, this.x, this.y);
 			this.animationD.drawFrame(this.game.clockTick, ctx, this.x, this.y);
 		}
-		if(this.health <= 0){
-			this.attacker = 0;
-		}
     }
+
+    if (this.health <= 0) {
+        for (var i = 0; i < this.game.entities.length; i++) {
+            var ent = this.game.entities[i];
+            if (this === ent) {
+                this.game.entities.splice(i, 1);
+            };
+        };
+    }
+    
+
+
 	ctx.restore();
 	
     //red circle around dog
