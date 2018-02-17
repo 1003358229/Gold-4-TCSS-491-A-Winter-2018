@@ -9,6 +9,36 @@
 
 
 
+var board = [];
+board = [];
+for (var i = 0; i < 18; i++) {
+    board.push([]);
+    for (var j = 0; j < 18; j++) {
+        board[i].push(0);
+    }
+}
+// board[0][5] = 10;
+// board[1][5] = 10;
+// board[2][5] = 10;
+// board[3][5] = 10;
+// board[4][5] = 10;
+// board[4][6] = 10;
+// //board[6][2] = 10;
+
+// board[7][2] = 10;
+// board[7][1] = 10;
+
+board[0][5] = 10;
+board[1][5] = 10;
+board[2][5] = 10;
+board[3][5] = 10;
+board[4][5] = 10;
+board[4][4] = 10;
+
+board[5][8] = 10;
+
+
+
 function GameBoard(game) {
 
     Entity.call(this, game, 20, 20);
@@ -21,13 +51,19 @@ function GameBoard(game) {
     this.canBuy = true;
 	this.purchaes_and_placed = false;
     this.player = 0;
-    this.board = [];
-    for (var i = 0; i < 18; i++) {
-        this.board.push([]);
-        for (var j = 0; j < 18; j++) {
-            this.board[i].push(0);
-        }
-    }
+    // this.board = [];
+    // for (var i = 0; i < 18; i++) {
+    //     this.board.push([]);
+    //     for (var j = 0; j < 18; j++) {
+    //         this.board[i].push(0);
+    //     }
+    // }
+    // this.board[0][5] = 10;
+    // this.board[1][5] = 10;
+    // this.board[2][5] = 10;
+    // this.board[3][6] = 10;
+    // this.board[3][7] = 10;
+
 }
 
 GameBoard.prototype = new Entity();
@@ -40,7 +76,7 @@ GameBoard.prototype.update = function () {
 		&& this.game.click.y > -1 && this.game.click.y < 18 ) {
 		
 		//place tower on an empty space (player = 0)
-		if(this.board[this.game.click.x][this.game.click.y] === 0){
+		if(board[this.game.click.x][this.game.click.y] === 0){
 			//changed from false to true to avoid bug
 			var canAfford = true;
 			//I want to not display the shadow after a success purchase of tower
@@ -73,7 +109,7 @@ GameBoard.prototype.update = function () {
 
             //place down the tower
 			if(canAfford) {
-                this.board[this.game.click.x][this.game.click.y] = this.player;
+                board[this.game.click.x][this.game.click.y] = this.player;
                 purchaes_and_placed = true;
                 this.player = 0;
                 var newTower = new tower1(gameEngine,this.game.click.x,this.game.click.y);
@@ -88,7 +124,7 @@ GameBoard.prototype.update = function () {
 			this.display_radius = false;
 		}
 		//draw radius for tower already been placed
-		if(this.board[this.game.click.x][this.game.click.y] != 0){
+		if(board[this.game.click.x][this.game.click.y] != 0){
 			this.radius_x = this.game.click.x;
 			this.radius_y = this.game.click.y;
 			this.display_radius = true;
@@ -189,7 +225,7 @@ GameBoard.prototype.draw = function (ctx) {
 	}
 
 	//draw radius for tower when clicked
-	if(this.board[this.radius_x][this.radius_y] != 0){
+	if(board[this.radius_x][this.radius_y] != 0){
 		ctx.beginPath();
 		ctx.rect(offset + (this.radius_x-2)*size, offset + (this.radius_y-2)*size, size * 5, size * 5);
 		ctx.lineWidth="5";
@@ -264,14 +300,14 @@ function tower1(game,x,y) {
     this.attacker = 0;
     this.fire = false;
     this.fire_distance = 0;
-    this.fire_frames = 3;
+    this.fire_frames = 20;
 }
 
 tower1.prototype = new Entity();
 tower1.prototype.constructor = tower1;
 
 tower1.prototype.draw = function (ctx) {
-    var player = this.game.entities[0].board[this.boardX][this.boardY];
+    var player = board[this.boardX][this.boardY];
     var joined = ['./img/tower', player, '.png'].join('');
     ctx.drawImage(ASSET_MANAGER.getAsset(joined), this.boardX * this.size + this.offset, this.boardY * this.size + this.offset - 20, 40, 60);
     if (this.fire){
@@ -324,7 +360,7 @@ tower1.prototype.inRange = function (x, y) {
 
 
 //add attacker
-function attackDude(game) {
+function attackDude(game, xTile, yTile) {
     this.scale = 0.8;
     this.animationR = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
     this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
@@ -333,9 +369,9 @@ function attackDude(game) {
     this.direction = 1;//1R 2L 3U 4D
     this.x_offset = 39;
     this.y_offset = 35;
-    this.x = this.x_offset;
-    this.y = this.y_offset;
     this.size = 41.67;
+    this.x = this.x_offset + xTile *this.size;
+    this.y = this.y_offset + yTile *this.size;;
     this.offset = 45;
     this.attacker = 1;
     this.game = game;
@@ -380,37 +416,72 @@ attackDude.prototype.update = function () {
 
     // walk in the square for now
     // walk to 4,0
-    if (this.x < Math.ceil(this.x_offset + this.size * 4)
-        && this.y === this.y_offset) {
-        this.direction = 1;
+
+    // if (this.x < Math.ceil(this.x_offset + this.size * 4)
+    //     && this.y === this.y_offset) {
+    //     this.direction = 1;
+    //     this.x += 0.25 * 4;
+    // //walk to 4,4
+    // } else if (this.x === Math.ceil(this.x_offset + this.size * 4)
+    //     && this.y < Math.ceil(this.y_offset + this.size * 4)) {
+    //     this.direction = 4;
+    //     this.y +=0.25 * 4;
+    // //walk to 0,4
+    // } else if (this.x > this.x_offset
+    //     && this.y === Math.ceil(this.y_offset + this.size * 4)) {
+    //     this.direction = 2;
+    //     this.x -= 0.25 * 4;
+    // //walk to 0,0
+    // } else if (this.x === this.x_offset && this.y > this.y_offset) {
+    //     this.direction = 3;
+    //     this.y -= 0.25 * 4;
+    // }
+
+    if(this.direction == 1) {
         this.x += 0.25 * 4;
-    //walk to 4,4
-    } else if (this.x === Math.ceil(this.x_offset + this.size * 4)
-        && this.y < Math.ceil(this.y_offset + this.size * 4)) {
-        this.direction = 4;
-        this.y +=0.25 * 4;
-    //walk to 0,4
-    } else if (this.x > this.x_offset
-        && this.y === Math.ceil(this.y_offset + this.size * 4)) {
-        this.direction = 2;
+    } else if(this.direction == 4) {
+        this.y += 0.25 * 4;
+    }else if(this.direction == 2) {
         this.x -= 0.25 * 4;
-    //walk to 0,0
-    } else if (this.x === this.x_offset && this.y > this.y_offset) {
-        this.direction = 3;
+    }else if(this.direction == 3) {
         this.y -= 0.25 * 4;
     }
+    
+    var newTile = false;
 
     var changedX =  Math.ceil((this.x - this.offset) / this.size);
     if(changedX != this.boardX) {
         this.boardX = changedX;
+        newTile = true;
     }
     var changedY =  Math.ceil((this.y - this.offset) / this.size);
     if(changedY != this.boardY) {
-        this.boardY = changedY;
+        this.boardY = changedY;        
+        newTile = true;
     }
-	
+    
+    if(newTile) {
+        this.direction = getNewDirection(this.boardX,this.boardY,this.direction);
+    }
 	Entity.prototype.update.call(this);
 }
+
+function getNewDirection(xCoord, yCoord, oldDirection) {
+
+    if(xCoord + 1 <=  17) {
+
+    //console.log(xCoord,yCoord);
+    if(board[xCoord + 1][yCoord] == 10) { //Right
+        return 1;
+    }else if(board[xCoord][yCoord-1] == 10) { //Up
+        return 4;
+    } else if(board[xCoord][yCoord+1] == 10) { //Down
+        return 3;
+    }}
+    return oldDirection;
+}
+
+
 
 
 
@@ -444,20 +515,24 @@ ASSET_MANAGER.downloadAll(function () {
     console.log("GAME entities count = " + gameEngine.entities.length);
 
     //add attacker
-    var attacker = new attackDude(gameEngine);
+    var attacker = new attackDude(gameEngine,0,5);
+    //var attacker2 = new attackDude(gameEngine,0,11);
+    
+    
     gameEngine.addEntity(attacker);
+    //gameEngine.addEntity(attacker2);
     var timesRun = 1;
 
     gameEngine.start();
 
     //repeatly add attacker
-    var interval = setInterval(function () {
-        var attacker = new attackDude(gameEngine);
-        gameEngine.addEntity(attacker);
-        timesRun += 1;
-        if (timesRun === 5) {//count of enemy
-            clearInterval(interval);
-        }
-    }, 1000); 
+    // var interval = setInterval(function () {
+    //     var attacker = new attackDude(gameEngine);
+    //     gameEngine.addEntity(attacker);
+    //     timesRun += 1;
+    //     if (timesRun === 5) {//count of enemy
+    //         clearInterval(interval);
+    //     }
+    // }, 1000); 
 
 });
