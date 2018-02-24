@@ -31,4 +31,4 @@ You have your tower assets but it is not clear that they are functionally differ
 In addition you only have a single wave of enemies.  
 You will need to have several stages of enemies to make the game challenging and fun to play.  
 1. different damage, radius, fire rate, etc.  
-2.several stages of enemies  
+2. several stages of enemies  
