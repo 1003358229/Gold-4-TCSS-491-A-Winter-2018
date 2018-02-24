@@ -302,6 +302,7 @@ tower1.prototype.update = function (ctx) {
             }
         };
     };
+
     if (this.fire) {
         (ent.x + 6) < (this.boardX * this.size + this.offset)
             ? this.x = (this.boardX * this.size + this.offset)
@@ -315,14 +316,13 @@ tower1.prototype.update = function (ctx) {
             : this.y = (this.boardY * this.size + this.offset)
             + this.fire_distance * Math.abs((ent.y + 10) - (this.boardY * this.size + this.offset)) / this.fireRate;
 
-        ent.health = ent.health - 1;
-
-    }
-
-    if (this.fire_distance < this.fireRate) {
-        this.fire_distance++;
-    } else {
-        this.fire_distance = 0;
+        if (this.fire_distance < this.fireRate) {
+            this.fire_distance++;
+        } else {
+            ent.health = ent.health - 50;
+            this.game.entities[0].score += 50;
+            this.fire_distance = 0;
+        }
     }
 
     Entity.prototype.update.call(this);
@@ -392,10 +392,10 @@ attackDude.prototype.draw = function (ctx) {
 		}
     }
     if (this.health <= 0) {
-		this.death.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-		var snd = new Audio("explosion.mp3"); // buffers automatically when created
-		snd.play();
-
+		//this.death.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+		//var snd = new Audio("explosion.mp3"); // buffers automatically when created
+		//snd.play();
+        this.game.entities[0].money += 500;
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
           if (this === ent) {
