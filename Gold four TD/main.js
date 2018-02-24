@@ -257,13 +257,41 @@ function tower1(game,x,y) {
     this.y;
     this.size = 41.67;
     this.offset = 45;
-    this.tower;//a variable to hold tower type
-    this.fire = false;//boolean use to decide weatrher the enemy is in range
+    this.fire = false;//boolean use to decide weather to draw bullet
     this.fire_distance = 0;//this is use to keep track of the bullet position
     this.towerRange; //EX = 2; Can attack 5x5 square with tower in center.
     this.fireRate; //this is the bullet speed and fire rate of the tower
     this.attackingEnt = null;//keep the bullet attacking same enemy when walking out of range
     this.inRangeEnt;//keep the bullet attacking same enemy when walking out of range
+    this.attackingEntX;//keep the bullet attacking same enemy when dead
+    this.attackingEntY;//keep the bullet attacking same enemy when dead
+
+    this.tower = this.game.entities[0].board[this.boardX][this.boardY];
+    if (this.tower == 1) {
+        this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        this.fireRate = 50; //this is the bullet speed and fire rate of the tower
+    } else if (this.tower == 2) {
+        this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+    } else if (this.tower == 3) {
+        this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+    } else if (this.tower == 4) {
+        this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+    } else if (this.tower == 5) {
+        this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+    } else if (this.tower == 6) {
+        this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+    } else if (this.tower == 7) {
+        this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+    } else if (this.tower == 8) {
+        this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+    }
 }
 
 tower1.prototype = new Entity();
@@ -271,41 +299,9 @@ tower1.prototype.constructor = tower1;
 
 tower1.prototype.draw = function (ctx) {
     //draw tower base on the infor stored in the game board
-    this.tower = this.game.entities[0].board[this.boardX][this.boardY];
     var joined = ['./img/tower', this.tower, '.png'].join('');
     ctx.drawImage(ASSET_MANAGER.getAsset(joined), this.boardX * this.size + this.offset, this.boardY * this.size + this.offset - 20, 40, 60);
-    if (this.tower == 1){
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 50; //this is the bullet speed and fire rate of the tower
-    }
-    if (this.tower == 2) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-    }
-    if (this.tower == 3) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-    }
-    if (this.tower == 4) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-    }
-    if (this.tower == 5) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-    }
-    if (this.tower == 6) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-    }
-    if (this.tower == 7) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-    }
-    if (this.tower == 8) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-    }
+
     //draw bullet
     if (this.fire){
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
@@ -336,32 +332,39 @@ tower1.prototype.update = function (ctx) {
 
     //keep attacking the same target when bullet already shooted but not yet hit
     if (this.attackingEnt != this.inRangeEnt
-        && !this.inRange(this.attackingEnt.boardX, this.attackingEnt.boardY)
-        && this.fire_distance != 0) {
+            && !this.inRange(this.attackingEnt.boardX, this.attackingEnt.boardY)
+            && this.fire_distance != 0) {
         this.fire = true;
     } else {
         this.attackingEnt = this.inRangeEnt;
     }
+    if (this.attackingEnt != null) {
+        this.attackingEntX = this.attackingEnt.x;//keep the bullet attacking same enemy when dead
+        this.attackingEntY = this.attackingEnt.y;//keep the bullet attacking same enemy when dead
+    }
+    
 
     //if the enemy is in range, shoot and change health and score
     if (this.fire) {
-        (this.attackingEnt.x + 6) < (this.boardX * this.size + this.offset)
+        (this.attackingEntX + 6) < (this.boardX * this.size + this.offset)
             ? this.x = (this.boardX * this.size + this.offset)
-            - this.fire_distance * Math.abs((this.attackingEnt.x + 6) - (this.boardX * this.size + this.offset)) / this.fireRate
+            - this.fire_distance * Math.abs((this.attackingEntX + 6) - (this.boardX * this.size + this.offset)) / this.fireRate
             : this.x = (this.boardX * this.size + this.offset)
-            + this.fire_distance * Math.abs((this.attackingEnt.x + 6) - (this.boardX * this.size + this.offset)) / this.fireRate;
+            + this.fire_distance * Math.abs((this.attackingEntX + 6) - (this.boardX * this.size + this.offset)) / this.fireRate;
         
-        (this.attackingEnt.y + 10) < (this.boardY * this.size + this.offset)
+        (this.attackingEntY + 10) < (this.boardY * this.size + this.offset)
             ? this.y = (this.boardY * this.size + this.offset)
-            - this.fire_distance * Math.abs((this.attackingEnt.y + 10) - (this.boardY * this.size + this.offset)) / this.fireRate
+            - this.fire_distance * Math.abs((this.attackingEntY + 10) - (this.boardY * this.size + this.offset)) / this.fireRate
             : this.y = (this.boardY * this.size + this.offset)
-            + this.fire_distance * Math.abs((this.attackingEnt.y + 10) - (this.boardY * this.size + this.offset)) / this.fireRate;
+            + this.fire_distance * Math.abs((this.attackingEntY + 10) - (this.boardY * this.size + this.offset)) / this.fireRate;
 
         if (this.fire_distance < this.fireRate) {
             this.fire_distance++;
         } else {
-            ent.health = ent.health - 50;
-            this.game.entities[0].score += 50;
+            if (this.attackingEnt != null) {
+                this.attackingEnt.health = this.attackingEnt.health - 50;
+                this.game.entities[0].score += 50;
+            }
             this.fire_distance = 0;
         }
     }
@@ -436,11 +439,11 @@ attackDude.prototype.draw = function (ctx) {
     }
 
     //delete entities when health = 0
-    //TODO: draw death animation
+    //TODO: draw death animation(not important for now)
     if (this.health <= 0) {
-		//this.death.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-		//var snd = new Audio("explosion.mp3"); // buffers automatically when created
-		//snd.play();
+		//this.death.drawFrame(this.game.clockTick, ctx, this.x, this.y);//function attackDude(game) {this.death. and assert manager
+		var snd = new Audio("explosion.mp3"); // buffers automatically when created
+		snd.play();
         this.game.entities[0].money += 500;
         for (var i = 0; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
@@ -462,9 +465,6 @@ attackDude.prototype.draw = function (ctx) {
 
 		
 	}
-    
-
-
 	ctx.restore();
 
     ////red circle around dog
