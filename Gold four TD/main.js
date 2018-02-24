@@ -315,7 +315,7 @@ tower1.prototype.update = function (ctx) {
     this.fire = false;
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
-        if (this != ent && ent.attacker == 1) { //if Entity is an enemy, should check to see if it is in range.
+        if (this != ent && ent.isAttacker == 1) { //if Entity is an enemy, should check to see if it is in range.
             isInrange = this.inRange(ent.boardX, ent.boardY);
             if (isInrange) {
                 this.fire = true;
@@ -383,7 +383,7 @@ tower1.prototype.inRange = function (x, y) {
 
 
 //add attacker
-function attackDude(game) {
+function attackDude(game, attacker) {
     this.scale = 0.8;
     this.animationR = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
     this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
@@ -398,47 +398,53 @@ function attackDude(game) {
     this.y_offset = 35;
     this.x = this.x_offset;
     this.y = Math.ceil(this.y_offset + this.size * 5);
-    this.attacker = 1;//use to indicate that this is a enemy(tower1.prototype.update)
+    this.isAttacker = 1;//use to indicate that this is a enemy(tower1.prototype.update)
     this.game = game;
     this.ctx = game.ctx;
     this.boardX = 0;
     this.boardY = 0;
-	this.health = 500;
+    this.attacker = attacker
+
+    if (this.attacker == 1) {
+        this.health = 500;
+        this.speed = 1;
+    } else if (this.attacker == 2) {
+        this.health = 500;
+        this.speed = 1;
+    } else if (this.attacker == 3) {
+        this.health = 500;
+        this.speed = 1;
+    }
+    
 }
 
 attackDude.prototype = new Entity();
 attackDude.prototype.constructor = attackDude;
 
 attackDude.prototype.draw = function (ctx) {
-    //draw health
     ctx.save();
-	ctx.strokeStyle ="red";
-	if(this.direction === 1){
-		if(this.health > 0){
-			ctx.strokeText("Hp: " + this.health, this.x, this.y);
-			this.animationR.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-		}
+
+    //draw four direction of enemy
+    if (this.direction === 1) {
+		this.animationR.drawFrame(this.game.clockTick, ctx, this.x, this.y);
 	}
 	if(this.direction === 2){
-		if(this.health > 0){
-			ctx.strokeText("Hp: " + this.health, this.x, this.y);
-			this.animationL.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-		}
+		this.animationL.drawFrame(this.game.clockTick, ctx, this.x, this.y);
 	}
 	if(this.direction === 3){
-		if(this.health > 0){
-			ctx.strokeText("Hp: " + this.health, this.x, this.y);
-			this.animationU.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-		}
+		this.animationU.drawFrame(this.game.clockTick, ctx, this.x, this.y);
 	}
-	if(this.direction === 4){
-		if(this.health > 0){
-			ctx.strokeText("Hp: " + this.health, this.x, this.y);
-			this.animationD.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-		}
+    if (this.direction === 4) {
+        this.animationD.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
 
-    //delete entities when health = 0
+    //draw health
+    if (this.health > 0) {
+        ctx.strokeStyle = "red";
+        ctx.strokeText("Hp: " + this.health, this.x, this.y);
+    }
+
+    //delete entities when health = 0, and play sound.
     //TODO: draw death animation(not important for now)
     if (this.health <= 0) {
 		//this.death.drawFrame(this.game.clockTick, ctx, this.x, this.y);//function attackDude(game) {this.death. and assert manager
@@ -455,15 +461,13 @@ attackDude.prototype.draw = function (ctx) {
 	
 	// Game over message
 	if(this.x > 745) {
-		ctx.save();
 		ctx.font = "75px Arial";
 		ctx.lineWidth = 8;
 		ctx.strokeStyle = "black";
 		ctx.strokeText("Game Over ", 250, 400); 
 		ctx.fillStyle = 'white';
-		ctx.fillText("Game Over ", 250, 400);
-
-		
+        ctx.fillText("Game Over ", 250, 400);
+        gameEngine = new GameEngine();
 	}
 	ctx.restore();
 
@@ -489,17 +493,26 @@ attackDude.prototype.update = function () {
     if (this.x < Math.ceil(this.x_offset + this.size * 3)
         && this.y === Math.ceil(this.y_offset + this.size * 5)) {
         this.direction = 1;
-        this.x += 0.25 * 4;
+        this.x += 1 * this.speed;
+        if (this.x > Math.ceil(this.x_offset + this.size * 3)){
+            this.x = Math.ceil(this.x_offset + this.size * 3);
+        }
     //walk to 3,7
     } else if (this.x === Math.ceil(this.x_offset + this.size * 3)
         && this.y < Math.ceil(this.y_offset + this.size * 7)) {
         this.direction = 4;
-        this.y += 0.25 * 4;
+        this.y += 1 * this.speed;
+        if (this.y > Math.ceil(this.y_offset + this.size * 7)) {
+            this.y = Math.ceil(this.y_offset + this.size * 7);
+        }
     //walk to 17,7
     } else if (this.x < Math.ceil(this.x_offset + this.size * 17)
         && this.y === Math.ceil(this.y_offset + this.size * 7)) {
         this.direction = 1;
-        this.x += 0.25 * 4;
+        this.x += 1 * this.speed;
+        if (this.x > Math.ceil(this.x_offset + this.size * 17)) {
+            this.x = Math.ceil(this.x_offset + this.size * 17);
+        }
     }
 
     //make it paralle to board axis instead of actuall axis
@@ -548,18 +561,20 @@ ASSET_MANAGER.downloadAll(function () {
     console.log("GAME entities count = " + gameEngine.entities.length);
 
     //add attacker total 5 for now
-    var attacker = new attackDude(gameEngine);
+    //add every 3s
+    var timeInterval = 3000;
+    var attacker = new attackDude(gameEngine, 1);
+    var count = 5;
     gameEngine.addEntity(attacker);
-    var timesRun = 1;
     gameEngine.start();
     //repeatly add attacker after game start
     var interval = setInterval(function () {
-        var attacker = new attackDude(gameEngine);
+        var attacker = new attackDude(gameEngine, 1);
         gameEngine.addEntity(attacker);
-        timesRun += 1;
-        if (timesRun === 5) {//count of enemy
+        count--;
+        if (count === 0) {//count of enemy
             clearInterval(interval);
         }
-    }, 3000); 
+    }, timeInterval);
 
 });
