@@ -467,7 +467,6 @@ attackDude.prototype.draw = function (ctx) {
 		ctx.strokeText("Game Over ", 250, 400); 
 		ctx.fillStyle = 'white';
         ctx.fillText("Game Over ", 250, 400);
-        gameEngine = new GameEngine();
 	}
 	ctx.restore();
 
