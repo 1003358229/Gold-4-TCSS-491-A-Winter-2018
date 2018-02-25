@@ -5,7 +5,6 @@ Karan Kurbur
 Dirk Sexton  
 
 What to do:  
-Add 1-3 different types of dogs, with different health and speed  
 Update map/path  
 Add level counter  
 No tower on path  
@@ -14,6 +13,7 @@ No tower on path
 Done:  
 Fix score - hit for score, kill for money  
 Give the towers their own firerate and damage, and maybe bullet  
+Add 1-3 different types of dogs, with different health and speed  
   
   
 Game Comment:  
