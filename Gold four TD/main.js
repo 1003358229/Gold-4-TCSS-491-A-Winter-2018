@@ -448,7 +448,19 @@ function attackDude(game, attacker) {
     this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
     this.animationU = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
     this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
-    this.death = new Animation(ASSET_MANAGER.getAsset("./img/ex.png"), 0, 0, 128, 128, 0.1, 10, true, this.scale);
+    this.animationR1 = new Animation(ASSET_MANAGER.getAsset("./img/Attack1.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
+    this.animationL1 = new Animation(ASSET_MANAGER.getAsset("./img/Attack1.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
+    this.animationU1 = new Animation(ASSET_MANAGER.getAsset("./img/Attack1.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
+    this.animationD1 = new Animation(ASSET_MANAGER.getAsset("./img/Attack1.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
+    this.animationR2 = new Animation(ASSET_MANAGER.getAsset("./img/Attack2.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
+    this.animationL2 = new Animation(ASSET_MANAGER.getAsset("./img/Attack2.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
+    this.animationU2 = new Animation(ASSET_MANAGER.getAsset("./img/Attack2.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
+    this.animationD2 = new Animation(ASSET_MANAGER.getAsset("./img/Attack2.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
+    this.animationR3 = new Animation(ASSET_MANAGER.getAsset("./img/Attack3.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
+    this.animationL3 = new Animation(ASSET_MANAGER.getAsset("./img/Attack3.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
+    this.animationU3 = new Animation(ASSET_MANAGER.getAsset("./img/Attack3.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
+    this.animationD3 = new Animation(ASSET_MANAGER.getAsset("./img/Attack3.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
+    //this.death = new Animation(ASSET_MANAGER.getAsset("./img/ex.png"), 0, 0, 128, 128, 0.1, 10, true, this.scale);
     
 
 
@@ -467,15 +479,18 @@ function attackDude(game, attacker) {
     this.boardY = 0;
     this.attacker = attacker
 
-    if (this.attacker == 1) {
+    if (this.attacker == 0) {
         this.health = 500;
         this.speed = 1;
+    } else if (this.attacker == 1) {
+        this.health = 500;
+        this.speed = 2;
     } else if (this.attacker == 2) {
-        this.health = 500;
-        this.speed = 1;
+        this.health = 1000;
+        this.speed = 2;
     } else if (this.attacker == 3) {
-        this.health = 500;
-        this.speed = 1;
+        this.health = 1000;
+        this.speed = 3;
     }
     
 }
@@ -487,18 +502,48 @@ attackDude.prototype.draw = function (ctx) {
     ctx.save();
 
     //draw four direction of enemy
-    if (this.direction === 1) {
-		this.animationR.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-	}
-	if(this.direction === 2){
-		this.animationL.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-	}
-	if(this.direction === 3){
-		this.animationU.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-	}
-    if (this.direction === 4) {
-        this.animationD.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    if (this.attacker == 0) {
+        if (this.direction === 1) {
+            this.animationR.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 2) {
+            this.animationL.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 3) {
+            this.animationU.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 4) {
+            this.animationD.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        }
+    } else if (this.attacker == 1) {
+        if (this.direction === 1) {
+            this.animationR1.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 2) {
+            this.animationL1.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 3) {
+            this.animationU1.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 4) {
+            this.animationD1.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        }
+    } else if (this.attacker == 2) {
+        if (this.direction === 1) {
+            this.animationR2.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 2) {
+            this.animationL2.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 3) {
+            this.animationU2.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 4) {
+            this.animationD2.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        }
+    } else if (this.attacker == 3) {
+        if (this.direction === 1) {
+            this.animationR3.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 2) {
+            this.animationL3.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 3) {
+            this.animationU3.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        } else if (this.direction === 4) {
+            this.animationD3.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        }
     }
+    
 
     //draw health
     if (this.health > 0) {
@@ -613,6 +658,9 @@ ASSET_MANAGER.queueDownload("./img/tower6.png");
 ASSET_MANAGER.queueDownload("./img/tower7.png");
 ASSET_MANAGER.queueDownload("./img/tower8.png");
 ASSET_MANAGER.queueDownload("./img/Attack.png");
+ASSET_MANAGER.queueDownload("./img/Attack1.png");
+ASSET_MANAGER.queueDownload("./img/Attack2.png");
+ASSET_MANAGER.queueDownload("./img/Attack3.png");
 ASSET_MANAGER.queueDownload("./img/cannonball.png");
 ASSET_MANAGER.queueDownload("./img/mario bullet.png");
 ASSET_MANAGER.queueDownload("./img/ex.png");
@@ -639,19 +687,15 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     console.log("GAME entities count = " + gameEngine.entities.length);
 
-    //add attacker total 5 for now
-    //add every 3s
-    var timeInterval = 3000;
-    var attacker = new attackDude(gameEngine, 1);
-    var count = 5;
-    gameEngine.addEntity(attacker);
+    var timeInterval = 1000;//add every 1s
+    var count = 0;
     gameEngine.start();
     //repeatly add attacker after game start
     var interval = setInterval(function () {
-        var attacker = new attackDude(gameEngine, 1);
+        var attacker = new attackDude(gameEngine, count);
         gameEngine.addEntity(attacker);
-        count--;
-        if (count === 0) {//count of enemy
+        count++;
+        if (count === 4) {
             clearInterval(interval);
         }
     }, timeInterval);
