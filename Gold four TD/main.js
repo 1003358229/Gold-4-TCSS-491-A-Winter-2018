@@ -5,6 +5,10 @@
 //Karan Kurbur
 //Dirk Sexton
 
+var towerDamages = [50,60,35,80,90,95,100,150];
+var towerRanges = [2, 2, 4, 1, 3, 2 , 2 , 1];
+var towerSpeed = [50,100,30,40,70,50,80,120];
+
 
 //Gameboard
 function GameBoard(game) {
@@ -17,6 +21,7 @@ function GameBoard(game) {
     this.canBuy = true;
 	this.purchaes_and_placed = false;
     this.player = 0;
+    this.level = 1;
     this.board = [];
     for (var i = 0; i < 18; i++) {
         this.board.push([]);
@@ -24,7 +29,22 @@ function GameBoard(game) {
             this.board[i].push(0);
         }
     }
+
+
+    if(this.level == 1) {
+        //Save Path in board 2d array
+        this.board[0][5] = 10;
+        this.board[1][5] = 10;
+        this.board[2][5] = 10;
+        this.board[3][5] = 10;
+        this.board[3][6] = 10;
+        for(var xcoord = 4; xcoord <= 17; xcoord++) {
+            this.board[xcoord][7] = 10;
+        }
+
+    }
 }
+
 
 GameBoard.prototype = new Entity();
 GameBoard.prototype.constructor = GameBoard;
@@ -82,9 +102,11 @@ GameBoard.prototype.update = function () {
 			this.range_x = this.game.click.x;
 			this.range_y = this.game.click.y;
 			this.display_range = false;
-		}
+        }
+        
+
 		//draw range for tower already been placed
-		if(this.board[this.game.click.x][this.game.click.y] != 0){
+		if(this.board[this.game.click.x][this.game.click.y] != 0 && this.board[this.game.click.x][this.game.click.y] != 10){
 			this.range_x = this.game.click.x;
 			this.range_y = this.game.click.y;
 			this.display_range = true;
@@ -175,8 +197,15 @@ GameBoard.prototype.draw = function (ctx) {
 
         //draw range for tower
         if (this.player != 0) {
+            var towerRange = towerRanges[this.player-1];
+            var boxSize = towerRange * 2 + 1;
             ctx.beginPath();
-            ctx.rect(offset + (this.game.mouse.x - 2) * size, offset + (this.game.mouse.y - 2) * size, size * 5, size * 5);
+            ctx.rect(offset + (this.game.mouse.x - towerRange) * size, offset + (this.game.mouse.y - towerRange) * size, size * boxSize, size * boxSize);
+
+
+            //ctx.rect(offset + (this.game.mouse.x - 2) * size, offset + (this.game.mouse.y - 2) * size, size * 5, size * 5);
+
+
             ctx.lineWidth = "10";
             ctx.strokeStyle = "blue";
             ctx.stroke();
@@ -186,9 +215,18 @@ GameBoard.prototype.draw = function (ctx) {
 
 	//draw range for tower when clicked
 	if(this.board[this.range_x][this.range_y] != 0){
-		ctx.beginPath();
-		ctx.rect(offset + (this.range_x-2)*size, offset + (this.range_y-2)*size, size * 5, size * 5);
-		ctx.lineWidth="5";
+        ctx.beginPath();
+        
+        var towerRange = towerRanges[this.board[this.range_x][this.range_y]-1];
+        var boxSize = towerRange * 2 + 1;
+
+
+        //ctx.rect(offset + (this.range_x-2)*size, offset + (this.range_y-2)*size, size * 5, size * 5);
+        
+		ctx.rect(offset + (this.range_x-towerRange)*size, offset + (this.range_y-towerRange)*size, size * boxSize, size * boxSize);
+        
+        
+        ctx.lineWidth="5";
         ctx.strokeStyle ="blue";
 		ctx.stroke();
     }
@@ -252,7 +290,10 @@ function tower1(game,x,y) {
     this.boardY = y;
     this.game = game;
     this.ctx = game.ctx;
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/cannonball.png"), 0, 0, 420, 420, 0.2, 1, true, 0.1);
+
+    //this.animation = new Animation(ASSET_MANAGER.getAsset("./img/cannonball.png"), 0, 0, 420, 420, 0.2, 1, true, 0.1);
+    
+    
     this.x;
     this.y;
     this.size = 41.67;
@@ -267,30 +308,44 @@ function tower1(game,x,y) {
     this.attackingEntY;//keep the bullet attacking same enemy when dead
 
     this.tower = this.game.entities[0].board[this.boardX][this.boardY];
+    this.fireRate = towerSpeed[this.tower-1];
+    this.towerRange = towerRanges[this.tower-1];
+
     if (this.tower == 1) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 50; //this is the bullet speed and fire rate of the tower
+        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        //this.fireRate = 50; //this is the bullet speed and fire rate of the tower
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/cannonball.png"), 0, 0, 420, 420, 0.2, 1, true, 0.1);
     } else if (this.tower == 2) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        //this.towerRange = 4; //Can attack 5x5 square with tower in center.
+        //this.fireRate = 150; //this is the bullet speed and fire rate of the tower
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/mario bullet.png"), 0, 0, 420, 420, 0.2, 1, true, 0.25);
     } else if (this.tower == 3) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 3.png"), 0, 0, 420, 420, 0.2, 1, true, 0.08);
     } else if (this.tower == 4) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/crosshair.png"), 0, 0, 420, 420, 0.2, 1, true, 0.4);
     } else if (this.tower == 5) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+       // this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/grenade.png"), 0, 0, 420, 420, 0.2, 1, true, 0.4);
+
     } else if (this.tower == 6) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/nuke.png"), 0, 0, 420, 420, 0.2, 1, true, 0.4);
+
     } else if (this.tower == 7) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
+        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 2.png"), 0, 0, 420, 420, 0.2, 1, true, 1);
+
     } else if (this.tower == 8) {
-        this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+        //this.towerRange = 4; //Can attack 5x5 square with tower in center.
+       //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
+       this.animation = new Animation(ASSET_MANAGER.getAsset("./img/firework.png"), 0, 0, 420, 420, 0.2, 1, true, 0.3);
     }
 }
 
@@ -362,8 +417,10 @@ tower1.prototype.update = function (ctx) {
             this.fire_distance++;
         } else {
             if (this.attackingEnt != null) {
-                this.attackingEnt.health = this.attackingEnt.health - 50;
-                this.game.entities[0].score += 50;
+                var towerDamage = towerDamages[this.tower-1];
+
+                this.attackingEnt.health = this.attackingEnt.health - towerDamage; //Grab tower damage info from global array
+                this.game.entities[0].score += towerDamage;
             }
             this.fire_distance = 0;
         }
@@ -385,11 +442,16 @@ tower1.prototype.inRange = function (x, y) {
 //add attacker
 function attackDude(game, attacker) {
     this.scale = 0.8;
+
+
     this.animationR = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
     this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
     this.animationU = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
     this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
-	this.death = new Animation(ASSET_MANAGER.getAsset("./img/ex.png"), 0, 0, 128, 128, 0.1, 10, true, this.scale);
+    this.death = new Animation(ASSET_MANAGER.getAsset("./img/ex.png"), 0, 0, 128, 128, 0.1, 10, true, this.scale);
+    
+
+
 	//spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, scale) 
     this.direction = 1;//1R 2L 3U 4D
     this.size = 41.67;
@@ -544,7 +606,17 @@ ASSET_MANAGER.queueDownload("./img/tower7.png");
 ASSET_MANAGER.queueDownload("./img/tower8.png");
 ASSET_MANAGER.queueDownload("./img/Attack.png");
 ASSET_MANAGER.queueDownload("./img/cannonball.png");
+ASSET_MANAGER.queueDownload("./img/mario bullet.png");
 ASSET_MANAGER.queueDownload("./img/ex.png");
+
+
+
+ASSET_MANAGER.queueDownload("./img/crosshair.png");
+ASSET_MANAGER.queueDownload("./img/grenade.png");
+ASSET_MANAGER.queueDownload("./img/bomb 2.png");
+ASSET_MANAGER.queueDownload("./img/nuke.png");
+ASSET_MANAGER.queueDownload("./img/bomb 3.png");
+ASSET_MANAGER.queueDownload("./img/firework.png");
 
 
 var gameEngine = new GameEngine();
