@@ -529,6 +529,14 @@ attackDude.prototype.draw = function (ctx) {
 		ctx.strokeText("Game Over ", 250, 400); 
 		ctx.fillStyle = 'white';
         ctx.fillText("Game Over ", 250, 400);
+        for (var i = 0; i < this.game.entities.length; i++) {
+            var ent = this.game.entities[i];
+            if (this != ent && ent.isAttacker == 1) { //if Entity is an enemy, should check to see if it is in range.
+                ent.speed = 0;
+            } else {
+                ent.towerRange = 0;
+            }
+        };
 	}
 	ctx.restore();
 
