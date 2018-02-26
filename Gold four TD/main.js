@@ -5,9 +5,9 @@
 //Karan Kurbur
 //Dirk Sexton
 
-var towerDamages = [50,60,35,80,90,95,100,150];
-var towerRanges = [2, 2, 4, 1, 3, 2 , 2 , 1];
-var towerSpeed = [50,100,30,40,70,50,80,120];
+var towerDamages = [50,95,35,80,90,95,100,150];
+var towerRanges = [2, 2, 4, 1, 3, 2, 2, 1];
+var towerSpeed = [50,75,30,40,70,50,80,120];
 
 
 //Gameboard
@@ -32,6 +32,18 @@ function GameBoard(game) {
 
 
     if(this.level == 1) {
+        //Save Path in board 2d array
+        this.board[0][5] = 10;
+        this.board[1][5] = 10;
+        this.board[2][5] = 10;
+        this.board[3][5] = 10;
+        this.board[3][6] = 10;
+        for(var xcoord = 3; xcoord <= 17; xcoord++) {
+            this.board[xcoord][7] = 10;
+        }
+
+    }
+	    if(this.level == 2) {
         //Save Path in board 2d array
         this.board[0][5] = 10;
         this.board[1][5] = 10;
@@ -152,15 +164,34 @@ GameBoard.prototype.update = function () {
 }
 
 GameBoard.prototype.draw = function (ctx) {
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/960px-Blank_Go_board.png"), this.x, this.y, 800, 800);
-	
-    var size = 41.67;
+	var size = 41.67;
     var offset = 45;
 	
-	//Score and money
+	//Draw tiles for board
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/960px-Blank_Go_board.png"), this.x, this.y, 800, 800);
+	
+	// THE MATH NEEDS TO BE FIXED HERE ***************
+	for (var i = 1; i < 18; i++) {
+        //ctx.fillRect(i* 46,offset+1,40,40); 
+		for (var j = 1; j < 18; j++) {
+			if(this.board[i][j] != 10) {
+				ctx.fillStyle = '#20d00d';
+				ctx.fillRect(i* 46 ,j * 46 ,40,40); 
+			}
+			if(this.board[i][j] == 10) {
+				ctx.fillStyle = '#985905';
+				ctx.fillRect(i* 46 ,j * 46 ,40,40); 
+			}
+		}
+    }
+	
+
+	
+	//Score, money, level counters, and price of towers
 	ctx.font = "25px Arial";
 	ctx.fillStyle = 'white';
 	ctx.fillText("Score: " + this.score, 45, 40); 
+	ctx.fillText("Level: " + this.level, 225, 40); 
 	ctx.fillText("Money: " + this.money, 420, 40); 
     ctx.fillText("Towers", 865, 40); 
     ctx.fillText("$50", 930, 120); 
@@ -322,11 +353,11 @@ function tower1(game,x,y) {
     } else if (this.tower == 3) {
         //this.towerRange = 2; //Can attack 5x5 square with tower in center.
         //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 3.png"), 0, 0, 420, 420, 0.2, 1, true, 0.08);
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 3.png"), 0, 0, 420, 420, 0.2, 1, true, 0.01);
     } else if (this.tower == 4) {
         //this.towerRange = 2; //Can attack 5x5 square with tower in center.
         //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/crosshair.png"), 0, 0, 420, 420, 0.2, 1, true, 0.4);
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/crosshair.png"), 0, 0, 600, 600, 0.2, 1, true, 0.05);
     } else if (this.tower == 5) {
        // this.towerRange = 2; //Can attack 5x5 square with tower in center.
         //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
@@ -340,7 +371,7 @@ function tower1(game,x,y) {
     } else if (this.tower == 7) {
         //this.towerRange = 2; //Can attack 5x5 square with tower in center.
         //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
-        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 2.png"), 0, 0, 420, 420, 0.2, 1, true, 1);
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 2.png"), 0, 0, 420, 420, 0.2, 1, true, .05);
 
     } else if (this.tower == 8) {
         //this.towerRange = 4; //Can attack 5x5 square with tower in center.
@@ -443,19 +474,22 @@ tower1.prototype.inRange = function (x, y) {
 function attackDude(game, attacker) {
     this.scale = 0.8;
 
-
+	//Regular enemy
     this.animationR = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
     this.animationL = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
     this.animationU = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
     this.animationD = new Animation(ASSET_MANAGER.getAsset("./img/Attack.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
+	//Green fast enemy
     this.animationR1 = new Animation(ASSET_MANAGER.getAsset("./img/Attack1.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
     this.animationL1 = new Animation(ASSET_MANAGER.getAsset("./img/Attack1.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
     this.animationU1 = new Animation(ASSET_MANAGER.getAsset("./img/Attack1.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
     this.animationD1 = new Animation(ASSET_MANAGER.getAsset("./img/Attack1.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
+	//Blue slow enemy
     this.animationR2 = new Animation(ASSET_MANAGER.getAsset("./img/Attack2.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
     this.animationL2 = new Animation(ASSET_MANAGER.getAsset("./img/Attack2.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
     this.animationU2 = new Animation(ASSET_MANAGER.getAsset("./img/Attack2.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
     this.animationD2 = new Animation(ASSET_MANAGER.getAsset("./img/Attack2.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
+	//Red boss enemy
     this.animationR3 = new Animation(ASSET_MANAGER.getAsset("./img/Attack3.png"), 0, 128, 64, 64, 0.2, 4, true, this.scale);
     this.animationL3 = new Animation(ASSET_MANAGER.getAsset("./img/Attack3.png"), 0, 64, 64, 64, 0.2, 4, true, this.scale);
     this.animationU3 = new Animation(ASSET_MANAGER.getAsset("./img/Attack3.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
@@ -480,17 +514,17 @@ function attackDude(game, attacker) {
     this.attacker = attacker
 
     if (this.attacker == 0) {
-        this.health = 500;
+        this.health = 250;
         this.speed = 1;
     } else if (this.attacker == 1) {
-        this.health = 500;
-        this.speed = 2;
+        this.health = 200;
+        this.speed = 2.5;
     } else if (this.attacker == 2) {
         this.health = 1000;
-        this.speed = 2;
+        this.speed = .5;
     } else if (this.attacker == 3) {
         this.health = 1000;
-        this.speed = 3;
+        this.speed = 2;
     }
     
 }
@@ -687,7 +721,7 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     console.log("GAME entities count = " + gameEngine.entities.length);
 
-    var timeInterval = 1000;//add every 1s
+    var timeInterval = 5000;//add every 1s
     var count = 0;
     gameEngine.start();
     //repeatly add attacker after game start

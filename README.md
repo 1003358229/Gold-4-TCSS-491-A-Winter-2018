@@ -5,15 +5,17 @@ Karan Kurbur
 Dirk Sexton  
 
 What to do:  
-Update map/path  
-Add level counter  
+Update map/path  (buggy kinda done)
+add level 1,2,3...+
+
   
   
 Done:  
 Fix score - hit for score, kill for money  
 Give the towers their own firerate and damage, and maybe bullet  
 Add 1-3 different types of dogs, with different health and speed  
-No tower on path  
+No tower on path 
+Add level counter   
   
   
 Game Comment:  
