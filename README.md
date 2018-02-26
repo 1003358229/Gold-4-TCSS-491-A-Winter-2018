@@ -5,9 +5,9 @@ Karan Kurbur
 Dirk Sexton  
 
 What to do:  
-Update map/path  (buggy kinda done)
-add level 1,2,3...+
-
+add level 1,2,3...+  
+Remove tower or sell tower function?  
+search the key word: TODO in code  
   
   
 Done:  
@@ -16,6 +16,7 @@ Give the towers their own firerate and damage, and maybe bullet
 Add 1-3 different types of dogs, with different health and speed  
 No tower on path 
 Add level counter   
+Update map/path  (buggy kinda done)  
   
   
 Game Comment:  
