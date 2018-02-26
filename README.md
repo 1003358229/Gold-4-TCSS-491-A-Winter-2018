@@ -5,7 +5,7 @@ Karan Kurbur
 Dirk Sexton  
 
 What to do:  
-add level 1,2,3...+
+add level 1,2,3...+  
 Remove tower or sell tower function?
   
   
