@@ -7,6 +7,7 @@ Dirk Sexton
 What to do:  
 add level 1,2,3...+  
 Remove tower or sell tower function?
+search the key word: TODO in code
   
   
 Done:  
