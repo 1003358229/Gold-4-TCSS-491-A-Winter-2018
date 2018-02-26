@@ -410,9 +410,13 @@ tower1.prototype.update = function (ctx) {
                 if (this.attackingEnt == null) {
                     this.attackingEnt = this.inRangeEnt;
                 }
+                if (this.attackingEnt != null && this.attackingEnt != this.inRangeEnt){
+                    continue;
+                }
                 break;
             } else {
                 this.fire = false;
+                this.inRangeEnt = null;
             }
         };
     };
@@ -617,6 +621,7 @@ attackDude.prototype.draw = function (ctx) {
             } else {
                 ent.towerRange = 0;
             }
+            count = 5;//stop add new enemy
         };
     }
     ctx.restore();
@@ -712,6 +717,7 @@ ASSET_MANAGER.queueDownload("./img/firework.png");
 
 
 var gameEngine = new GameEngine();
+var count;
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
@@ -724,18 +730,18 @@ ASSET_MANAGER.downloadAll(function () {
     console.log("GAME entities count = " + gameEngine.entities.length);
 
     var timeInterval = 5000;//add every timeInterval/1000 second
-    var count = 0;
+    count = 0;
     var attacker = new attackDude(gameEngine, count);
     gameEngine.addEntity(attacker);
     gameEngine.start();
     //repeatly add attacker after game start
     var interval = setInterval(function () {
+        if (count === 5) {
+            clearInterval(interval);
+        }
         var attacker = new attackDude(gameEngine, count);
         gameEngine.addEntity(attacker);
         count++;
-        if (count === 4) {
-            clearInterval(interval);
-        }
     }, timeInterval);
 
 });
