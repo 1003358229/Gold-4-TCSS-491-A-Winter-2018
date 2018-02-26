@@ -23,9 +23,9 @@ function GameBoard(game) {
     this.player = 0;
     this.level = 1;
     this.board = [];
-    for (var i = 0; i < 18; i++) {
+    for (var i = 0; i <= 18; i++) {
         this.board.push([]);
-        for (var j = 0; j < 18; j++) {
+        for (var j = 0; j <= 18; j++) {
             this.board[i].push(0);
         }
     }
@@ -501,22 +501,23 @@ function attackDude(game, attacker) {
     this.animationU3 = new Animation(ASSET_MANAGER.getAsset("./img/Attack3.png"), 0, 192, 64, 64, 0.2, 4, true, this.scale);
     this.animationD3 = new Animation(ASSET_MANAGER.getAsset("./img/Attack3.png"), 0, 0, 64, 64, 0.2, 4, true, this.scale);
     //this.death = new Animation(ASSET_MANAGER.getAsset("./img/ex.png"), 0, 0, 128, 128, 0.1, 10, true, this.scale);
-
-
-
     //spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, scale) 
-    this.direction = 1;//1R 2L 3U 4D
+
+    //this.direction = 1;//1R 2L 3U 4D
+    this.direction = 0;
     this.size = 41.67;
     this.offset = 45;
-    this.x_offset = 39;
+    this.x_offset = 38;
     this.y_offset = 35;
-    this.x = this.x_offset;
-    this.y = Math.ceil(this.y_offset + this.size * 5);
+    //this.x = this.x_offset;
+    //this.y = Math.ceil(this.y_offset + this.size * 5);
+    this.x;
+    this.y;
     this.isAttacker = 1;//use to indicate that this is a enemy(tower1.prototype.update)
     this.game = game;
     this.ctx = game.ctx;
-    this.boardX = 0;
-    this.boardY = 0;
+    this.boardX;
+    this.boardY;
     this.attacker = attacker
 
     if (this.attacker == 0) {
@@ -584,7 +585,6 @@ attackDude.prototype.draw = function (ctx) {
         }
     }
 
-
     //draw health
     if (this.health > 0) {
         ctx.strokeStyle = "red";
@@ -629,11 +629,9 @@ attackDude.prototype.draw = function (ctx) {
     ////red circle around dog
     //ctx.beginPath();
     //ctx.lineWidth="6";
-    //ctx.strokeStyle="red";
     //ctx.rect(this.x + 6, this.y + 10, 1, 1);
     //ctx.stroke();
     //ctx.lineWidth="1";
-    //ctx.strokeStyle="red";
     //ctx.rect(this.x + 6, this.y + 10, this.size, this.size);
     //ctx.stroke();
 
@@ -643,48 +641,112 @@ attackDude.prototype.draw = function (ctx) {
 
 
 attackDude.prototype.update = function () {
-
-    // walk to 3,5
-    if (this.x < Math.ceil(this.x_offset + this.size * 3)
-        && this.y === Math.ceil(this.y_offset + this.size * 5)) {
-        this.direction = 1;
-        this.x += 1 * this.speed;
-        if (this.x > Math.ceil(this.x_offset + this.size * 3)) {
-            this.x = Math.ceil(this.x_offset + this.size * 3);
-        }
-        //walk to 3,7
-    } else if (this.x === Math.ceil(this.x_offset + this.size * 3)
-        && this.y < Math.ceil(this.y_offset + this.size * 7)) {
-        this.direction = 4;
-        this.y += 1 * this.speed;
-        if (this.y > Math.ceil(this.y_offset + this.size * 7)) {
-            this.y = Math.ceil(this.y_offset + this.size * 7);
-        }
-        //walk to 17,7
-    } else if (this.x < Math.ceil(this.x_offset + this.size * 17)
-        && this.y === Math.ceil(this.y_offset + this.size * 7)) {
-        this.direction = 1;
-        this.x += 1 * this.speed;
-        if (this.x > Math.ceil(this.x_offset + this.size * 17)) {
-            this.x = Math.ceil(this.x_offset + this.size * 17);
-        }
-    }
+    this.direction = this.DD(this.direction);
+    //// walk to 3,5
+    //if (this.x < Math.ceil(this.x_offset + this.size * 3)
+    //    && this.y === Math.ceil(this.y_offset + this.size * 5)) {
+    //    this.direction = 1;
+    //    this.x += 1 * this.speed;
+    //    if (this.x > Math.ceil(this.x_offset + this.size * 3)) {
+    //        this.x = Math.ceil(this.x_offset + this.size * 3);
+    //    }
+    //    //walk to 3,7
+    //} else if (this.x === Math.ceil(this.x_offset + this.size * 3)
+    //    && this.y < Math.ceil(this.y_offset + this.size * 17)) {
+    //    this.direction = 4;
+    //    this.y += 1 * this.speed;
+    //    if (this.y > Math.ceil(this.y_offset + this.size * 7)) {
+    //        this.y = Math.ceil(this.y_offset + this.size * 7);
+    //    }
+    //    //walk to 17,7
+    //} else if (this.x < Math.ceil(this.x_offset + this.size * 17)
+    //    && this.y === Math.ceil(this.y_offset + this.size * 7)) {
+    //    this.direction = 1;
+    //    this.x += 1 * this.speed;
+    //    if (this.x > Math.ceil(this.x_offset + this.size * 17)) {
+    //        this.x = Math.ceil(this.x_offset + this.size * 17);
+    //    }
+    //}
 
     //make it paralle to board axis instead of actuall axis
-    var changedX = Math.ceil((this.x - this.offset) / this.size);
+    var changedX = Math.floor((this.x + 6 - this.x_offset) / this.size);
     if (changedX != this.boardX) {
         this.boardX = changedX;
     }
-    var changedY = Math.ceil((this.y - this.offset) / this.size);
+    var changedY = Math.floor((this.y +10 - this.y_offset) / this.size);
     if (changedY != this.boardY) {
         this.boardY = changedY;
     }
 
-
     Entity.prototype.update.call(this);
 }
 
-
+//TODO: do a directrion decision to make the dog walking
+//1R 2L 3U 4D
+attackDude.prototype.DD = function (direction) {
+    if (direction == 0){
+        for (var i = 0; i <= 17; i++) {
+            if (this.game.entities[0].board[0][i] == 10) {
+                direction = 1;
+                this.x = this.x_offset;
+                this.y = Math.ceil(this.y_offset + this.size * i);
+            } else if (this.game.entities[0].board[i][0] == 10) {
+                direction = 4;
+                this.x = Math.ceil(this.x_offset + this.size * i);
+                this.y = this.y_offset;
+            }
+        }
+    }
+    else if (direction == 1) {
+        this.x += 1 * this.speed;
+        if (this.game.entities[0].board[this.boardX + 1][this.boardY] != 10 && this.x > Math.ceil(this.x_offset + this.size * this.boardX)) {
+            if (this.game.entities[0].board[this.boardX][this.boardY + 1] == 10) {
+                direction = 4;
+                this.x = Math.ceil(this.x_offset + this.size * this.boardX)
+            } else if (this.game.entities[0].board[this.boardX][this.boardY - 1] == 10) {
+                direction = 3;
+                this.x = Math.ceil(this.x_offset + this.size * this.boardX)
+            }
+        }
+    } 
+    else if (direction == 2) {
+        this.x -= 1 * this.speed;
+        if (this.game.entities[0].board[this.boardX - 1][this.boardY] != 10 && this.x < Math.ceil(this.x_offset + this.size * this.boardX)) {
+            if (this.game.entities[0].board[this.boardX][this.boardY + 1] == 10) {
+                direction = 4;
+                this.x = Math.ceil(this.x_offset + this.size * this.boardX)
+            } else if (this.game.entities[0].board[this.boardX][this.boardY - 1] == 10) {
+                direction = 3;
+                this.x = Math.ceil(this.x_offset + this.size * this.boardX)
+            }
+        }
+    }
+    else if (direction == 3) {
+        this.y -= 1 * this.speed;
+        if (this.game.entities[0].board[this.boardX][this.boardY - 1] != 10 && this.y < Math.ceil(this.y_offset + this.size * this.boardY)) {
+            if (this.game.entities[0].board[this.boardX + 1][this.boardY] == 10) {
+                direction = 1;
+                this.y = Math.ceil(this.y_offset + this.size * this.boardY)
+            } else if (this.game.entities[0].board[this.boardX - 1][this.boardY] == 10) {
+                direction = 2;
+                this.y = Math.ceil(this.y_offset + this.size * this.boardY)
+            }
+        }
+    } 
+    else if (direction == 4) {
+        this.y += 1 * this.speed;
+        if (this.game.entities[0].board[this.boardX][this.boardY + 1] != 10 && this.y > Math.ceil(this.y_offset + this.size * this.boardY)) {
+            if (this.game.entities[0].board[this.boardX + 1][this.boardY] == 10) {
+                direction = 1;
+                this.y = Math.ceil(this.y_offset + this.size * this.boardY)
+            } else if (this.game.entities[0].board[this.boardX - 1][this.boardY] == 10) {
+                direction = 2;
+                this.y = Math.ceil(this.y_offset + this.size * this.boardY)
+            }
+        }
+    }
+    return direction;
+}
 
 // the "main" code begins here
 var ASSET_MANAGER = new AssetManager();
