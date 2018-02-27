@@ -11,7 +11,7 @@ var towerSpeed = [50, 75, 30, 40, 70, 50, 80, 120];
 
 
 //Gameboard
-function GameBoard(game) {
+function GameBoard(game,gameLevel) {
     Entity.call(this, game, 20, 20);
     this.range_x = 0;
     this.range_y = 0;
@@ -21,7 +21,7 @@ function GameBoard(game) {
     this.canBuy = true;
     this.purchaes_and_placed = false;
     this.player = 0;
-    this.level = 1;
+    this.level = gameLevel;
     this.board = [];
     for (var i = 0; i <= 18; i++) {
         this.board.push([]);
@@ -45,16 +45,111 @@ function GameBoard(game) {
 
 
     if (this.level == 2) {
-        //Save Path in board 2d array
-        this.board[0][5] = 10;
-        this.board[1][5] = 10;
-        this.board[2][5] = 10;
-        this.board[3][5] = 10;
-        this.board[3][6] = 10;
-        for (var xcoord = 4; xcoord <= 17; xcoord++) {
-            this.board[xcoord][7] = 10;
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[coord][3] = 10;
         }
+        for (var coord = 0; coord <= 9; coord++) {
+            this.board[4][3+coord] = 10;
+        }
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[4+coord][13] = 10;
+        }
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[4+coord][13] = 10;
+        }
+        for (var coord = 0; coord <= 11; coord++) {
+            this.board[8][13-coord] = 10;
+        }
+        for (var coord = 0; coord <= 2; coord++) {
+            this.board[9+coord][2] = 10;
+        }
+        for (var coord = 0; coord <= 2; coord++) {
+            this.board[9+coord][2] = 10;
+        }
+        for (var coord = 0; coord <= 12; coord++) {
+            this.board[11][3+coord] = 10;
+        }
+        for (var coord = 0; coord <= 8; coord++) {
+            this.board[10-coord][15] = 10;
+        }
+        this.board[2][16] = 10;
+        for (var coord = 0; coord <= 12; coord++) {
+            this.board[2+coord][17] = 10;
+        }
+        for (var coord = 0; coord <= 12; coord++) {
+            this.board[14][16-coord] = 10;
+        }
+        this.board[15][4] = 10;
+
+        for (var coord = 0; coord <= 13; coord++) {
+            this.board[16][4+coord] = 10;
+        }
+        
+
     }
+
+    if(this.level == 3) {
+        // for (var coord = 0; coord <= 3; coord++) {
+        //     this.board[coord][3] = 10;
+        // }
+        for (var coord = 0; coord <= 4; coord++) {
+            this.board[3][0+coord] = 10;
+        }
+        this.board[2][4] = 10;
+        this.board[1][4] = 10;
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[1][5+coord] = 10;
+        }
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[2+coord][8] = 10;
+        }
+        for (var coord = 0; coord <= 6; coord++) {
+            this.board[5][7-coord] = 10;
+        }
+        this.board[6][1] = 10;
+        for (var coord = 0; coord <= 10; coord++) {
+            this.board[7][1+coord] = 10;
+        }
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[6-coord][11] = 10;
+        }
+        for (var coord = 0; coord <= 5; coord++) {
+            this.board[2][11+coord] = 10;
+        }
+        for (var coord = 0; coord <= 2; coord++) {
+            this.board[3+coord][16] = 10;
+        }
+        this.board[5][15] = 10;
+        this.board[5][14] = 10;
+        for (var coord = 0; coord <= 8; coord++) {
+            this.board[5+coord][13] = 10;
+        }
+        for (var coord = 0; coord <= 10; coord++) {
+            this.board[13][13-coord] = 10;
+        }
+        this.board[11][3] = 10;
+        this.board[12][3] = 10;
+        for (var coord = 0; coord <= 8; coord++) {
+            this.board[11][3+coord] = 10;
+        }
+        this.board[10][11] = 10;
+        for (var coord = 0; coord <= 10; coord++) {
+            this.board[9][11-coord] = 10;
+        }
+        for (var coord = 0; coord <= 5; coord++) {
+            this.board[10+coord][1] = 10;
+        }
+        for (var coord = 0; coord <= 13; coord++) {
+            this.board[15][2+coord] = 10;
+        }
+        for (var coord = 0; coord <= 4; coord++) {
+            this.board[10+coord][15] = 10;
+        }       
+        this.board[10][16] = 10;
+        this.board[10][17] = 10;
+
+    }
+
 }
 
 
@@ -475,7 +570,6 @@ tower1.prototype.inRange = function (x, y) {
 }
 
 
-
 //add attacker
 function attackDude(game, attacker) {
     this.scale = 0.8;
@@ -607,7 +701,7 @@ attackDude.prototype.draw = function (ctx) {
     }
 
     // Game over message
-    if (this.x > 745) {
+    if (this.x > 745 || this.y > 745) {
         ctx.font = "75px Arial";
         ctx.lineWidth = 8;
         ctx.strokeStyle = "black";
@@ -784,7 +878,7 @@ ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
-    var gameboard = new GameBoard(gameEngine);
+    var gameboard = new GameBoard(gameEngine,3);
     console.log("GAME ENGINE " + gameEngine);
     console.log(gameboard);
     gameEngine.addEntity(gameboard);
@@ -793,17 +887,19 @@ ASSET_MANAGER.downloadAll(function () {
 
     var timeInterval = 5000;//add every timeInterval/1000 second
     count = 0;
-    var attacker = new attackDude(gameEngine, count);
+    var attacker = new attackDude(gameEngine, 1);
     gameEngine.addEntity(attacker);
     gameEngine.start();
-    //repeatly add attacker after game start
-    var interval = setInterval(function () {
-        if (count === 5) {
-            clearInterval(interval);
-        }
-        var attacker = new attackDude(gameEngine, count);
-        gameEngine.addEntity(attacker);
-        count++;
-    }, timeInterval);
+    // //repeatly add attacker after game start 
+    // var interval = setInterval(function () {
+    //     if (count === 5) {
+    //         clearInterval(interval);
+    //     }
+    //     console.log(count + "THIS IS COUNT");
+    
+    //     var attacker = new attackDude(gameEngine, count);
+    //     gameEngine.addEntity(attacker);
+    //     count++;
+    // }, timeInterval);
 
 });
