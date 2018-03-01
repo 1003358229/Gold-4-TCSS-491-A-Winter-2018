@@ -7,7 +7,7 @@ Dirk Sexton
 What to do:  
 1. Remove tower or sell tower function?  
 2. we need to update the path and the exit of path has to be on the right or bottom because of the code  
-3  search the key word: TODO in code(should there be an explotion animation for bullet and enemy death)  
+3. search the key word: TODO in code(should there be an explotion animation for bullet and enemy death)  
 4. add level 1,2,3...+  
 5. update the "game over" if statement to detect both x and y axis  
 6. tower and enemy should be balanced so it can be played with more fun  
