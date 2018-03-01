@@ -263,7 +263,6 @@ GameBoard.prototype.draw = function (ctx) {
     var offset = 45;
 
     //Draw tiles for board
-    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/960px-Blank_Go_board.png"), this.x, this.y, 800, 800);
     for (var i = 0; i <= 17; i++) {
         for (var j = 0; j <= 17; j++) {
             if (this.board[i][j] != 10) {
@@ -335,10 +334,6 @@ GameBoard.prototype.draw = function (ctx) {
             ctx.beginPath();
             ctx.rect(offset + (this.game.mouse.x - towerRange) * size, offset + (this.game.mouse.y - towerRange) * size, size * boxSize, size * boxSize);
 
-
-            //ctx.rect(offset + (this.game.mouse.x - 2) * size, offset + (this.game.mouse.y - 2) * size, size * 5, size * 5);
-
-
             ctx.lineWidth = "10";
             ctx.strokeStyle = "blue";
             ctx.stroke();
@@ -353,11 +348,7 @@ GameBoard.prototype.draw = function (ctx) {
         var towerRange = towerRanges[this.board[this.range_x][this.range_y] - 1];
         var boxSize = towerRange * 2 + 1;
 
-
-        //ctx.rect(offset + (this.range_x-2)*size, offset + (this.range_y-2)*size, size * 5, size * 5);
-
         ctx.rect(offset + (this.range_x - towerRange) * size, offset + (this.range_y - towerRange) * size, size * boxSize, size * boxSize);
-
 
         ctx.lineWidth = "5";
         ctx.strokeStyle = "blue";
@@ -423,15 +414,12 @@ function tower1(game, x, y) {
     this.boardY = y;
     this.game = game;
     this.ctx = game.ctx;
-    //this.animation = new Animation(ASSET_MANAGER.getAsset("./img/cannonball.png"), 0, 0, 420, 420, 0.2, 1, true, 0.1);
     this.x;
     this.y;
     this.size = 41.67;
     this.offset = 45;
     this.fire = false;//boolean use to decide weather to draw bullet
     this.fire_distance = 0;//this is use to keep track of the bullet position
-    //this.towerRange; //EX = 2; Can attack 5x5 square with tower in center.
-    //this.fireRate; //this is the bullet speed and fire rate of the tower
     this.attackingEnt = null;//keep the bullet attacking same enemy when walking out of range
     this.inRangeEnt;//keep the bullet attacking same enemy when walking out of range
     this.attackingEntX;//keep the bullet attacking same enemy when dead
@@ -442,36 +430,20 @@ function tower1(game, x, y) {
     this.towerRange = towerRanges[this.tower - 1];
 
     if (this.tower == 1) {
-        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        //this.fireRate = 50; //this is the bullet speed and fire rate of the tower
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/cannonball.png"), 0, 0, 420, 420, 0.2, 1, true, 0.1);
     } else if (this.tower == 2) {
-        //this.towerRange = 4; //Can attack 5x5 square with tower in center.
-        //this.fireRate = 150; //this is the bullet speed and fire rate of the tower
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/mario bullet.png"), 0, 0, 420, 420, 0.2, 1, true, 0.25);
     } else if (this.tower == 3) {
-        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 3.png"), 0, 0, 420, 420, 0.2, 1, true, 0.01);
     } else if (this.tower == 4) {
-        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/crosshair.png"), 0, 0, 600, 600, 0.2, 1, true, 0.05);
     } else if (this.tower == 5) {
-        // this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/grenade.png"), 0, 0, 420, 420, 0.2, 1, true, 0.4);
     } else if (this.tower == 6) {
-        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/nuke.png"), 0, 0, 420, 420, 0.2, 1, true, 0.4);
     } else if (this.tower == 7) {
-        //this.towerRange = 2; //Can attack 5x5 square with tower in center.
-        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 2.png"), 0, 0, 420, 420, 0.2, 1, true, .05);
     } else if (this.tower == 8) {
-        //this.towerRange = 4; //Can attack 5x5 square with tower in center.
-        //this.fireRate = 25; //this is the bullet speed and fire rate of the tower
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/firework.png"), 0, 0, 420, 420, 0.2, 1, true, 0.3);
     }
 }
@@ -597,14 +569,12 @@ function attackDude(game, attacker) {
     //this.death = new Animation(ASSET_MANAGER.getAsset("./img/ex.png"), 0, 0, 128, 128, 0.1, 10, true, this.scale);
     //spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, scale) 
 
-    //this.direction = 1;//1R 2L 3U 4D
-    this.direction = 0;
+
+    this.direction = 0;//1R 2L 3U 4D
     this.size = 41.67;
     this.offset = 45;
     this.x_offset = 38;
     this.y_offset = 35;
-    //this.x = this.x_offset;
-    //this.y = Math.ceil(this.y_offset + this.size * 5);
     this.x;
     this.y;
     this.isAttacker = 1;//use to indicate that this is a enemy(tower1.prototype.update)
@@ -736,32 +706,6 @@ attackDude.prototype.draw = function (ctx) {
 
 attackDude.prototype.update = function () {
     this.direction = this.DD(this.direction);
-    //// walk to 3,5
-    //if (this.x < Math.ceil(this.x_offset + this.size * 3)
-    //    && this.y === Math.ceil(this.y_offset + this.size * 5)) {
-    //    this.direction = 1;
-    //    this.x += 1 * this.speed;
-    //    if (this.x > Math.ceil(this.x_offset + this.size * 3)) {
-    //        this.x = Math.ceil(this.x_offset + this.size * 3);
-    //    }
-    //    //walk to 3,7
-    //} else if (this.x === Math.ceil(this.x_offset + this.size * 3)
-    //    && this.y < Math.ceil(this.y_offset + this.size * 17)) {
-    //    this.direction = 4;
-    //    this.y += 1 * this.speed;
-    //    if (this.y > Math.ceil(this.y_offset + this.size * 7)) {
-    //        this.y = Math.ceil(this.y_offset + this.size * 7);
-    //    }
-    //    //walk to 17,7
-    //} else if (this.x < Math.ceil(this.x_offset + this.size * 17)
-    //    && this.y === Math.ceil(this.y_offset + this.size * 7)) {
-    //    this.direction = 1;
-    //    this.x += 1 * this.speed;
-    //    if (this.x > Math.ceil(this.x_offset + this.size * 17)) {
-    //        this.x = Math.ceil(this.x_offset + this.size * 17);
-    //    }
-    //}
-
     //make it paralle to board axis instead of actuall axis
     var changedX = Math.floor((this.x + 6 - this.x_offset) / this.size);
     if (changedX != this.boardX) {
@@ -845,7 +789,6 @@ attackDude.prototype.DD = function (direction) {
 // the "main" code begins here
 var ASSET_MANAGER = new AssetManager();
 
-ASSET_MANAGER.queueDownload("./img/960px-Blank_Go_board.png");
 ASSET_MANAGER.queueDownload("./img/tower1.png");
 ASSET_MANAGER.queueDownload("./img/tower2.png");
 ASSET_MANAGER.queueDownload("./img/tower3.png");
