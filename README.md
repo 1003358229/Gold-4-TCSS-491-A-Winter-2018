@@ -9,7 +9,6 @@ What to do:
 2. we need to update the path and the exit of path has to be on the right or bottom because of the code  
 3. search the key word: TODO in code(should there be an explotion animation for bullet and enemy death?)  
 4. add level 1,2,3...+  
-5. update the "game over" if statement to detect both x and y axis  
 6. tower and enemy should be balanced so it can be played with more fun  
 7. bullet animation should be with no directions  
 8. too many towers that look the same and works the same way.(maybe slow tower, multi target tower?)  
@@ -21,6 +20,7 @@ Add 1-3 different types of dogs, with different health and speed
 No tower on path 
 Add level counter   
 Update map/path  (buggy kinda done)  
+update the "game over" if statement to detect both x and y axis  
   
   
 Game Comment:  
