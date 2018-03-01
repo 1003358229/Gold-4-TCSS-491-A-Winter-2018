@@ -27,123 +27,6 @@ function GameBoard(game,gameLevel) {
             this.board[i].push(0);
         }
     }
-
-
-    if (this.level == 1) {
-        //Save Path in board 2d array
-        this.board[0][5] = 10;
-        this.board[1][5] = 10;
-        this.board[2][5] = 10;
-        this.board[3][5] = 10;
-        this.board[3][6] = 10;
-        for (var xcoord = 3; xcoord <= 17; xcoord++) {
-            this.board[xcoord][7] = 10;
-        }
-    }
-
-
-    if (this.level == 2) {
-        for (var coord = 0; coord <= 3; coord++) {
-            this.board[coord][3] = 10;
-        }
-        for (var coord = 0; coord <= 9; coord++) {
-            this.board[4][3+coord] = 10;
-        }
-        for (var coord = 0; coord <= 3; coord++) {
-            this.board[4+coord][13] = 10;
-        }
-        for (var coord = 0; coord <= 3; coord++) {
-            this.board[4+coord][13] = 10;
-        }
-        for (var coord = 0; coord <= 11; coord++) {
-            this.board[8][13-coord] = 10;
-        }
-        for (var coord = 0; coord <= 2; coord++) {
-            this.board[9+coord][2] = 10;
-        }
-        for (var coord = 0; coord <= 2; coord++) {
-            this.board[9+coord][2] = 10;
-        }
-        for (var coord = 0; coord <= 12; coord++) {
-            this.board[11][3+coord] = 10;
-        }
-        for (var coord = 0; coord <= 8; coord++) {
-            this.board[10-coord][15] = 10;
-        }
-        this.board[2][16] = 10;
-        for (var coord = 0; coord <= 12; coord++) {
-            this.board[2+coord][17] = 10;
-        }
-        for (var coord = 0; coord <= 12; coord++) {
-            this.board[14][16-coord] = 10;
-        }
-        this.board[15][4] = 10;
-
-        for (var coord = 0; coord <= 13; coord++) {
-            this.board[16][4+coord] = 10;
-        }
-    }
-
-    if(this.level == 3) {
-        // for (var coord = 0; coord <= 3; coord++) {
-        //     this.board[coord][3] = 10;
-        // }
-        for (var coord = 0; coord <= 4; coord++) {
-            this.board[3][0+coord] = 10;
-        }
-        this.board[2][4] = 10;
-        this.board[1][4] = 10;
-        for (var coord = 0; coord <= 3; coord++) {
-            this.board[1][5+coord] = 10;
-        }
-        for (var coord = 0; coord <= 3; coord++) {
-            this.board[2+coord][8] = 10;
-        }
-        for (var coord = 0; coord <= 6; coord++) {
-            this.board[5][7-coord] = 10;
-        }
-        this.board[6][1] = 10;
-        for (var coord = 0; coord <= 10; coord++) {
-            this.board[7][1+coord] = 10;
-        }
-        for (var coord = 0; coord <= 3; coord++) {
-            this.board[6-coord][11] = 10;
-        }
-        for (var coord = 0; coord <= 5; coord++) {
-            this.board[2][11+coord] = 10;
-        }
-        for (var coord = 0; coord <= 2; coord++) {
-            this.board[3+coord][16] = 10;
-        }
-        this.board[5][15] = 10;
-        this.board[5][14] = 10;
-        for (var coord = 0; coord <= 8; coord++) {
-            this.board[5+coord][13] = 10;
-        }
-        for (var coord = 0; coord <= 10; coord++) {
-            this.board[13][13-coord] = 10;
-        }
-        this.board[11][3] = 10;
-        this.board[12][3] = 10;
-        for (var coord = 0; coord <= 8; coord++) {
-            this.board[11][3+coord] = 10;
-        }
-        this.board[10][11] = 10;
-        for (var coord = 0; coord <= 10; coord++) {
-            this.board[9][11-coord] = 10;
-        }
-        for (var coord = 0; coord <= 5; coord++) {
-            this.board[10+coord][1] = 10;
-        }
-        for (var coord = 0; coord <= 13; coord++) {
-            this.board[15][2+coord] = 10;
-        }
-        for (var coord = 0; coord <= 4; coord++) {
-            this.board[10+coord][15] = 10;
-        }       
-        this.board[10][16] = 10;
-        this.board[10][17] = 10;
-    }
 }
 
 
@@ -249,6 +132,140 @@ GameBoard.prototype.update = function () {
         this.canBuy = true;
     }
 
+    //draw path of different level
+    if (this.level == 1) {
+        for (var i = 0; i <= 18; i++) {
+            for (var j = 0; j <= 18; j++) {
+                if (this.board[i][j] = 10){
+                    this.board[i][j] = 0;
+                }
+            }
+        }
+        //Save Path in board 2d array
+        this.board[0][5] = 10;
+        this.board[1][5] = 10;
+        this.board[2][5] = 10;
+        this.board[3][5] = 10;
+        this.board[3][6] = 10;
+        for (var xcoord = 3; xcoord <= 17; xcoord++) {
+            this.board[xcoord][7] = 10;
+        }
+    }
+
+
+    if (this.level == 2) {
+        for (var i = 0; i <= 18; i++) {
+            for (var j = 0; j <= 18; j++) {
+                if (this.board[i][j] = 10) {
+                    this.board[i][j] = 0;
+                }
+            }
+        }
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[coord][3] = 10;
+        }
+        for (var coord = 0; coord <= 9; coord++) {
+            this.board[4][3 + coord] = 10;
+        }
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[4 + coord][13] = 10;
+        }
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[4 + coord][13] = 10;
+        }
+        for (var coord = 0; coord <= 11; coord++) {
+            this.board[8][13 - coord] = 10;
+        }
+        for (var coord = 0; coord <= 2; coord++) {
+            this.board[9 + coord][2] = 10;
+        }
+        for (var coord = 0; coord <= 2; coord++) {
+            this.board[9 + coord][2] = 10;
+        }
+        for (var coord = 0; coord <= 12; coord++) {
+            this.board[11][3 + coord] = 10;
+        }
+        for (var coord = 0; coord <= 8; coord++) {
+            this.board[10 - coord][15] = 10;
+        }
+        this.board[2][16] = 10;
+        for (var coord = 0; coord <= 12; coord++) {
+            this.board[2 + coord][17] = 10;
+        }
+        for (var coord = 0; coord <= 12; coord++) {
+            this.board[14][16 - coord] = 10;
+        }
+        this.board[15][4] = 10;
+
+        for (var coord = 0; coord <= 13; coord++) {
+            this.board[16][4 + coord] = 10;
+        }
+    }
+
+    if (this.level == 3) {
+        for (var i = 0; i <= 18; i++) {
+            for (var j = 0; j <= 18; j++) {
+                if (this.board[i][j] = 10) {
+                    this.board[i][j] = 0;
+                }
+            }
+        }
+        for (var coord = 0; coord <= 4; coord++) {
+            this.board[3][0 + coord] = 10;
+        }
+        this.board[2][4] = 10;
+        this.board[1][4] = 10;
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[1][5 + coord] = 10;
+        }
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[2 + coord][8] = 10;
+        }
+        for (var coord = 0; coord <= 6; coord++) {
+            this.board[5][7 - coord] = 10;
+        }
+        this.board[6][1] = 10;
+        for (var coord = 0; coord <= 10; coord++) {
+            this.board[7][1 + coord] = 10;
+        }
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[6 - coord][11] = 10;
+        }
+        for (var coord = 0; coord <= 5; coord++) {
+            this.board[2][11 + coord] = 10;
+        }
+        for (var coord = 0; coord <= 2; coord++) {
+            this.board[3 + coord][16] = 10;
+        }
+        this.board[5][15] = 10;
+        this.board[5][14] = 10;
+        for (var coord = 0; coord <= 8; coord++) {
+            this.board[5 + coord][13] = 10;
+        }
+        for (var coord = 0; coord <= 10; coord++) {
+            this.board[13][13 - coord] = 10;
+        }
+        this.board[11][3] = 10;
+        this.board[12][3] = 10;
+        for (var coord = 0; coord <= 8; coord++) {
+            this.board[11][3 + coord] = 10;
+        }
+        this.board[10][11] = 10;
+        for (var coord = 0; coord <= 10; coord++) {
+            this.board[9][11 - coord] = 10;
+        }
+        for (var coord = 0; coord <= 5; coord++) {
+            this.board[10 + coord][1] = 10;
+        }
+        for (var coord = 0; coord <= 13; coord++) {
+            this.board[15][2 + coord] = 10;
+        }
+        for (var coord = 0; coord <= 4; coord++) {
+            this.board[10 + coord][15] = 10;
+        }
+        this.board[10][16] = 10;
+        this.board[10][17] = 10;
+    }
     Entity.prototype.update.call(this);
 }
 
@@ -816,7 +833,7 @@ ASSET_MANAGER.queueDownload("./img/firework.png");
 
 var gameEngine = new GameEngine();
 var count;
-var level = 2;
+var level = 3;
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
