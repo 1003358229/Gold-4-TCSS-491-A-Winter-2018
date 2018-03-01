@@ -1,5 +1,4 @@
 //TCSS491 2018
-
 //Edited by
 //Dongsheng Han
 //Karan Kurbur
@@ -8,7 +7,6 @@
 var towerDamages = [50, 95, 35, 80, 90, 95, 100, 150];
 var towerRanges = [2, 2, 4, 1, 3, 2, 2, 1];
 var towerSpeed = [50, 75, 30, 40, 70, 50, 80, 120];
-
 
 //Gameboard
 function GameBoard(game,gameLevel) {
@@ -84,8 +82,6 @@ function GameBoard(game,gameLevel) {
         for (var coord = 0; coord <= 13; coord++) {
             this.board[16][4+coord] = 10;
         }
-        
-
     }
 
     if(this.level == 3) {
@@ -147,9 +143,7 @@ function GameBoard(game,gameLevel) {
         }       
         this.board[10][16] = 10;
         this.board[10][17] = 10;
-
     }
-
 }
 
 
@@ -522,9 +516,14 @@ tower1.prototype.update = function (ctx) {
         } else {
             if (this.attackingEnt != null) {
                 var towerDamage = towerDamages[this.tower - 1];
-
-                this.attackingEnt.health = this.attackingEnt.health - towerDamage; //Grab tower damage info from global array
-                this.game.entities[0].score += towerDamage;
+                if (this.attackingEnt.health >= towerDamage){
+                    this.attackingEnt.health = this.attackingEnt.health - towerDamage; //Grab tower damage info from global array
+                    this.game.entities[0].score += towerDamage;
+                } else {
+                    this.game.entities[0].score += this.attackingEnt.health;
+                    this.attackingEnt.health = 0;
+                }
+                
             }
             this.fire_distance = 0;
         }
@@ -817,11 +816,12 @@ ASSET_MANAGER.queueDownload("./img/firework.png");
 
 var gameEngine = new GameEngine();
 var count;
+var level = 2;
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
-    var gameboard = new GameBoard(gameEngine,3);
+    var gameboard = new GameBoard(gameEngine, level);
     console.log("GAME ENGINE " + gameEngine);
     console.log(gameboard);
     gameEngine.addEntity(gameboard);
@@ -844,5 +844,4 @@ ASSET_MANAGER.downloadAll(function () {
     //     gameEngine.addEntity(attacker);
     //     count++;
     // }, timeInterval);
-
 });
