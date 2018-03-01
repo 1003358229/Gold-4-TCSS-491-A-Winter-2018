@@ -18,7 +18,7 @@ Give the towers their own firerate and damage, and maybe bullet
 Add 1-3 different types of dogs, with different health and speed  
 No tower on path 
 Add level counter   
-Update map/path  (buggy kinda done)  
+Update map/path  
 update the "game over" if statement to detect both x and y axis  
   
   
