@@ -9,14 +9,14 @@ What to do:
     1. (levels function done without add waves of enemy)  
     2. (exit of path has to be on the right or bottom)  
 2. tower and enemy should be balanced so it can be played with more fun  
-    1. (search first TODO in code)  
+    1. tower price is balanced a bit  
 3. bullet animation should be with no directions  
 4. Remove tower or sell tower function?  
 5. too many towers that look the same and works the same way.  
     1. (maybe slow tower, multi target tower?)  
 6. search the key word: TODO in code
-    1. better price balance  
-    2. an explotion animation for bullet and enemy death?  
+    1. an explotion animation for bullet and enemy death?  
+7. display tower info(range damage firerate)  
   
 Game Comment:  
 To be a successful tower defense  
