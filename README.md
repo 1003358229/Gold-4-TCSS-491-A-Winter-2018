@@ -18,16 +18,6 @@ What to do:
     1. better price balance  
     2. an explotion animation for bullet and enemy death?  
   
-Done:  
-Fix score - hit for score, kill for money  
-Give the towers their own firerate and damage, and maybe bullet  
-Add 1-3 different types of dogs, with different health and speed  
-No tower on path 
-Add level counter   
-Update map/path  
-update the "game over" if statement to detect both x and y axis  
-  
-  
 Game Comment:  
 To be a successful tower defense  
 you will want to include:  
