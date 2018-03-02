@@ -4,6 +4,8 @@
 //Karan Kurbur
 //Dirk Sexton
 
+//TODO: price should use something like (damage * range)/speed 
+//      as a ratio to balance the price since high towerSpeed mean lower attack speed
 var towerDamages = [50, 95, 35, 80, 90, 95, 100, 150];
 var towerRanges = [2, 2, 4, 1, 3, 2, 2, 1];
 var towerSpeed = [50, 75, 30, 40, 70, 50, 80, 120];
