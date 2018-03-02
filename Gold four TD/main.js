@@ -29,6 +29,10 @@ function GameBoard(game) {
     this.purchaes_and_placed = false;
     this.player = 0;
     this.board = [];
+    this.doneWithLevel1 = false;
+    this.doneWithLevel2 = false;
+
+
     for (var i = 0; i <= 18; i++) {
         this.board.push([]);
         for (var j = 0; j <= 18; j++) {
@@ -157,11 +161,20 @@ GameBoard.prototype.update = function () {
     if (level == 2) {
         for (var i = 0; i <= 18; i++) {
             for (var j = 0; j <= 18; j++) {
-                if (this.board[i][j] == 10) {
+                // if (this.board[i][j] == 10) {
+                //     this.board[i][j] = 0;
+                // }
+                if(this.doneWithLevel1 == false) {
                     this.board[i][j] = 0;
                 }
+
             }
         }
+
+        if(this.doneWithLevel1 == false) {
+            this.doneWithLevel1 = true;
+        }
+
         for (var coord = 0; coord <= 3; coord++) {
             this.board[coord][3] = 10;
         }
@@ -206,10 +219,18 @@ GameBoard.prototype.update = function () {
     if (level == 3) {
         for (var i = 0; i <= 18; i++) {
             for (var j = 0; j <= 18; j++) {
-                if (this.board[i][j] == 10) {
+                // if (this.board[i][j] == 10) {
+                //     this.board[i][j] = 0;
+                // }
+                if(this.doneWithLevel2 == false) {
                     this.board[i][j] = 0;
                 }
+
             }
+        }
+
+        if(this.doneWithLevel2 == false) {
+            this.doneWithLevel2 = true;
         }
         for (var coord = 0; coord <= 4; coord++) {
             this.board[3][0 + coord] = 10;
@@ -864,6 +885,7 @@ var level_1_load_complete = 0;
 var level_2_load_complete = 0;
 var level_3_load_complete = 0;
 var victory = 0;
+
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
