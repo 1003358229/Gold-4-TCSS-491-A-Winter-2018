@@ -880,7 +880,7 @@ ASSET_MANAGER.downloadAll(function () {
             var attacker = new attackDude(gameEngine, 0);
             gameEngine.addEntity(attacker);
             count++;
-            if (count >= 1) {
+            if (count >= 3) {
                 level_1_load_complete = 1;
                 clearInterval(interval_lv1);
             }
@@ -907,7 +907,7 @@ ASSET_MANAGER.downloadAll(function () {
                 var attacker = new attackDude(gameEngine, 1);
                 gameEngine.addEntity(attacker);
                 count++;
-                if (count >= 1) {
+                if (count >= 3) {
                     level_2_load_complete = 1;
                     clearInterval(interval);
                 }
@@ -935,7 +935,7 @@ ASSET_MANAGER.downloadAll(function () {
                 var attacker = new attackDude(gameEngine, 2);
                 gameEngine.addEntity(attacker);
                 count++;
-                if (count >= 1) {
+                if (count >= 3) {
                     level_3_load_complete = 1;
                     clearInterval(interval);
                 }
