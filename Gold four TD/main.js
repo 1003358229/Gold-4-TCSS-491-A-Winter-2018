@@ -367,7 +367,14 @@ GameBoard.prototype.draw = function (ctx) {
         ctx.stroke();
     }
     ctx.restore();
-
+    // Game over message
+    if (victory) {
+        ctx.font = "75px Arial";
+        ctx.strokeStyle = "black";
+        ctx.strokeText("Victory ", 300, 400);
+        ctx.fillStyle = 'white';
+        ctx.fillText("Victory ", 300, 400);
+    }
     Entity.prototype.draw.call(this);
 }
 
@@ -852,6 +859,7 @@ var MAX_LEVEL = 3;
 var level_1_load_complete = 0;
 var level_2_load_complete = 0;
 var level_3_load_complete = 0;
+var victory = 0;
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
     var canvas = document.getElementById('gameWorld');
@@ -946,7 +954,7 @@ ASSET_MANAGER.downloadAll(function () {
             };
         };
         if (level_1_load_complete && level_2_load_complete && level_3_load_complete && !enemy_count) {
-            level = 9999999999;
+            victory = 1;
             clearInterval(interval_level);
         }
     }, timeInterval);
