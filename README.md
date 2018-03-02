@@ -6,7 +6,7 @@ Dirk Sexton
 
 What to do:  
 1. Remove tower or sell tower function?  
-3. search the key word: TODO in code(1. an explotion animation for bullet and enemy death? 2. better price balance)  
+3. search the key word: TODO in code(1. better price balance 2. an explotion animation for bullet and enemy death?)  
 4. have different levels of game(levels function done without add waves of enemy)(exit of path has to be on the right or bottom)  
 6. tower and enemy should be balanced so it can be played with more fun(search first TODO in code)  
 7. bullet animation should be with no directions  
