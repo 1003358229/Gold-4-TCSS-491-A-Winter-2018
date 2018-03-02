@@ -305,16 +305,20 @@ GameBoard.prototype.draw = function (ctx) {
     ctx.fillStyle = 'white';
     ctx.fillText("Score: " + this.score, 45, 40);
     ctx.fillText("Level: " + level, 225, 40);
-    ctx.fillText("Money: " + this.money, 420, 40);
+    ctx.fillText("Money: $" + this.money, 420, 40);
     ctx.fillText("Towers", 865, 40);
-    ctx.fillText("$"+ towerPrice[0], 930, 120);
-    ctx.fillText("$"+ towerPrice[1], 930, 200);
-    ctx.fillText("$"+ towerPrice[2], 930, 280);
-    ctx.fillText("$"+ towerPrice[3], 930, 360);
-    ctx.fillText("$"+ towerPrice[4], 930, 440);
-    ctx.fillText("$"+ towerPrice[5], 930, 520);
-    ctx.fillText("$"+ towerPrice[6], 930, 600);
-    ctx.fillText("$"+ towerPrice[7], 930, 680);
+    ctx.fillText("Range", 1030, 40);
+    ctx.fillText("Damage", 1130, 40);
+    ctx.fillText("Attack Interval", 1250, 40);
+    ctx.fillText("$" + towerPrice[0] + "          " + towerRanges[0] + "             " + towerDamages[0] + "                 " + towerSpeed[0], 930, 120);
+    ctx.fillText("$" + towerPrice[1] + "          " + towerRanges[1] + "             " + towerDamages[1] + "                 " + towerSpeed[1], 930, 200);
+    ctx.fillText("$" + towerPrice[2] + "          " + towerRanges[2] + "             " + towerDamages[2] + "                 " + towerSpeed[2], 930, 280);
+    ctx.fillText("$" + towerPrice[3] + "          " + towerRanges[3] + "             " + towerDamages[3] + "                 " + towerSpeed[3], 930, 360);
+    ctx.fillText("$" + towerPrice[4] + "          " + towerRanges[4] + "             " + towerDamages[4] + "                 " + towerSpeed[4], 930, 440);
+    ctx.fillText("$" + towerPrice[5] + "          " + towerRanges[5] + "             " + towerDamages[5] + "                 " + towerSpeed[5], 930, 520);
+    ctx.fillText("$" + towerPrice[6] + "          " + towerRanges[6] + "            " + towerDamages[6] + "                " + towerSpeed[6], 930, 600);
+    ctx.fillText("$" + towerPrice[7] + "            " + towerRanges[7] + "            " + towerDamages[7] + "               " + towerSpeed[7], 930, 680);
+    ctx.fillText("Click on Towers to select", 930, 760);
 
     //Draw tower menu
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), 20 * size + offset, size + offset - 20, 40, 60);
