@@ -16,7 +16,6 @@ What to do:
     1. (maybe slow tower, multi target tower?)  
 6. search the key word: TODO in code
     1. an explotion animation for bullet and enemy death?  
-7. display tower info(range damage firerate)  
   
 Game Comment:  
 To be a successful tower defense  
