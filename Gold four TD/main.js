@@ -4,11 +4,18 @@
 //Karan Kurbur
 //Dirk Sexton
 
-//TODO: price should use something like (damage * range)/speed 
-//      as a ratio to balance the price since high towerSpeed mean lower attack speed
 var towerDamages = [50, 95, 35, 80, 90, 95, 100, 150];
 var towerRanges = [2, 2, 4, 1, 3, 2, 2, 1];
 var towerSpeed = [50, 75, 30, 40, 70, 50, 80, 120];
+var towerPrice = [Math.floor(towerDamages[0] * towerRanges[0] * towerRanges[0] / towerSpeed[0] * 50)
+    , Math.floor(towerDamages[1] * towerRanges[1] * towerRanges[1] / towerSpeed[1] * 50)
+    , Math.floor(towerDamages[2] * towerRanges[2] * towerRanges[2] / towerSpeed[2] * 50)
+    , Math.floor(towerDamages[3] * towerRanges[3] * towerRanges[3] / towerSpeed[3] * 50)
+    , Math.floor(towerDamages[4] * towerRanges[4] * towerRanges[4] / towerSpeed[4] * 50)
+    , Math.floor(towerDamages[5] * towerRanges[5] * towerRanges[5] / towerSpeed[5] * 50)
+    , Math.floor(towerDamages[6] * towerRanges[6] * towerRanges[6] / towerSpeed[6] * 50)
+    , Math.floor(towerDamages[7] * towerRanges[7] * towerRanges[7] / towerSpeed[7] * 50)];
+
 
 //Gameboard
 function GameBoard(game) {
@@ -52,22 +59,22 @@ GameBoard.prototype.update = function () {
             //have less than price of current tower but haven't clicked since then 
             //Money subtraction
             //put all four statement in to one
-            if (this.player === 1 && this.money >= 50) {
-                this.money -= 50;
-            } else if (this.player === 2 && this.money >= 100) {
-                this.money -= 100;
-            } else if (this.player === 3 && this.money >= 75) {
-                this.money -= 75;
-            } else if (this.player === 4 && this.money >= 125) {
-                this.money -= 125;
-            } else if (this.player === 5 && this.money >= 150) {
-                this.money -= 250;
-            } else if (this.player === 6 && this.money >= 275) {
-                this.money -= 275;
-            } else if (this.player === 7 && this.money >= 150) {
-                this.money -= 150;
-            } else if (this.player === 8 && this.money >= 350) {
-                this.money -= 350;
+            if (this.player === 1 && this.money >= towerPrice[this.player - 1]) {
+                this.money -= towerPrice[this.player - 1];
+            } else if (this.player === 2 && this.money >= towerPrice[this.player - 1]) {
+                this.money -= towerPrice[this.player - 1];
+            } else if (this.player === 3 && this.money >= towerPrice[this.player - 1]) {
+                this.money -= towerPrice[this.player - 1];
+            } else if (this.player === 4 && this.money >= towerPrice[this.player - 1]) {
+                this.money -= towerPrice[this.player - 1];
+            } else if (this.player === 5 && this.money >= towerPrice[this.player - 1]) {
+                this.money -= towerPrice[this.player - 1];
+            } else if (this.player === 6 && this.money >= towerPrice[this.player - 1]) {
+                this.money -= towerPrice[this.player - 1];
+            } else if (this.player === 7 && this.money >= towerPrice[this.player - 1]) {
+                this.money -= towerPrice[this.player - 1];
+            } else if (this.player === 8 && this.money >= towerPrice[this.player - 1]) {
+                this.money -= towerPrice[this.player - 1];
             } else {
                 canAfford = false;
             }
@@ -100,35 +107,35 @@ GameBoard.prototype.update = function () {
     }
 
     //Select tower
-    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 1 && this.money >= 50) {
+    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 1 && this.money >= towerPrice[0]) {
         this.player = 1;
         this.canBuy = true;
     }
-    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 3 && this.money >= 100) {
+    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 3 && this.money >= towerPrice[1]) {
         this.player = 2;
         this.canBuy = true;
     }
-    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 5 && this.money >= 75) {
+    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 5 && this.money >= towerPrice[2]) {
         this.player = 3;
         this.canBuy = true;
     }
-    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 7 && this.money >= 125) {
+    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 7 && this.money >= towerPrice[3]) {
         this.player = 4;
         this.canBuy = true;
     }
-    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 9 && this.money >= 150) {
+    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 9 && this.money >= towerPrice[4]) {
         this.player = 5;
         this.canBuy = true;
     }
-    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 11 && this.money >= 275) {
+    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 11 && this.money >= towerPrice[5]) {
         this.player = 6;
         this.canBuy = true;
     }
-    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 13 && this.money >= 150) {
+    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 13 && this.money >= towerPrice[6]) {
         this.player = 7;
         this.canBuy = true;
     }
-    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 15 && this.money >= 350) {
+    if (this.game.click && this.game.click.x === 20 && this.game.click.y === 15 && this.money >= towerPrice[7]) {
         this.player = 8;
         this.canBuy = true;
     }
@@ -150,7 +157,7 @@ GameBoard.prototype.update = function () {
     if (level == 2) {
         for (var i = 0; i <= 18; i++) {
             for (var j = 0; j <= 18; j++) {
-                if (this.board[i][j] != 0) {
+                if (this.board[i][j] == 10) {
                     this.board[i][j] = 0;
                 }
             }
@@ -300,14 +307,14 @@ GameBoard.prototype.draw = function (ctx) {
     ctx.fillText("Level: " + level, 225, 40);
     ctx.fillText("Money: " + this.money, 420, 40);
     ctx.fillText("Towers", 865, 40);
-    ctx.fillText("$50", 930, 120);
-    ctx.fillText("$100", 930, 200);
-    ctx.fillText("$75", 930, 280);
-    ctx.fillText("$125", 930, 360);
-    ctx.fillText("$150", 930, 440);
-    ctx.fillText("$275", 930, 520);
-    ctx.fillText("$150", 930, 600);
-    ctx.fillText("$350", 930, 680);
+    ctx.fillText("$"+ towerPrice[0], 930, 120);
+    ctx.fillText("$"+ towerPrice[1], 930, 200);
+    ctx.fillText("$"+ towerPrice[2], 930, 280);
+    ctx.fillText("$"+ towerPrice[3], 930, 360);
+    ctx.fillText("$"+ towerPrice[4], 930, 440);
+    ctx.fillText("$"+ towerPrice[5], 930, 520);
+    ctx.fillText("$"+ towerPrice[6], 930, 600);
+    ctx.fillText("$"+ towerPrice[7], 930, 680);
 
     //Draw tower menu
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/tower1.png"), 20 * size + offset, size + offset - 20, 40, 60);
@@ -440,7 +447,7 @@ function tower1(game, x, y) {
     } else if (this.tower == 2) {
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/mario bullet.png"), 0, 0, 420, 420, 0.2, 1, true, 0.25);
     } else if (this.tower == 3) {
-        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 3.png"), 0, 0, 420, 420, 0.2, 1, true, 0.01);
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 3.png"), 0, 0, 512, 512, 0.2, 1, true, 0.05);
     } else if (this.tower == 4) {
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/crosshair.png"), 0, 0, 600, 600, 0.2, 1, true, 0.05);
     } else if (this.tower == 5) {
@@ -448,7 +455,7 @@ function tower1(game, x, y) {
     } else if (this.tower == 6) {
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/nuke.png"), 0, 0, 420, 420, 0.2, 1, true, 0.4);
     } else if (this.tower == 7) {
-        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 2.png"), 0, 0, 420, 420, 0.2, 1, true, .05);
+        this.animation = new Animation(ASSET_MANAGER.getAsset("./img/bomb 2.png"), 0, 0, 420, 420, 0.2, 1, true, 0.05);
     } else if (this.tower == 8) {
         this.animation = new Animation(ASSET_MANAGER.getAsset("./img/firework.png"), 0, 0, 420, 420, 0.2, 1, true, 0.3);
     }
@@ -468,11 +475,12 @@ tower1.prototype.draw = function (ctx) {
     }
     //delete entities when player = 10;
     var board = this.game.entities[0];
-    if (board.board[this.boardX][this.boardY] == 10) {
+    if (board.board[this.boardX][this.boardY] == 10 || board.board[this.boardX][this.boardY] != this.tower) {
         for (var i = 1; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
             if (this === ent) {
                 this.game.entities.splice(i, 1);
+                board.money += towerPrice[this.tower - 1];
             };
         };
     }
@@ -522,15 +530,15 @@ tower1.prototype.update = function (ctx) {
     //if the enemy is in range, shoot and change health and score
     if (this.fire) {
         (this.attackingEntX + 6) < (this.boardX * this.size + this.offset)
-            ? this.x = (this.boardX * this.size + this.offset)
+            ? this.x = (this.boardX * this.size + this.offset + this.size / 10)
             - this.fire_distance * Math.abs((this.attackingEntX + 6) - (this.boardX * this.size + this.offset)) / this.fireRate
-            : this.x = (this.boardX * this.size + this.offset)
+            : this.x = (this.boardX * this.size + this.offset + this.size / 10)
             + this.fire_distance * Math.abs((this.attackingEntX + 6) - (this.boardX * this.size + this.offset)) / this.fireRate;
 
         (this.attackingEntY + 10) < (this.boardY * this.size + this.offset)
-            ? this.y = (this.boardY * this.size + this.offset)
+            ? this.y = (this.boardY * this.size + this.offset + this.size / 10)
             - this.fire_distance * Math.abs((this.attackingEntY + 10) - (this.boardY * this.size + this.offset)) / this.fireRate
-            : this.y = (this.boardY * this.size + this.offset)
+            : this.y = (this.boardY * this.size + this.offset + this.size / 10)
             + this.fire_distance * Math.abs((this.attackingEntY + 10) - (this.boardY * this.size + this.offset)) / this.fireRate;
 
         if (this.fire_distance < this.fireRate) {
@@ -605,16 +613,20 @@ function attackDude(game, attacker) {
     this.attacker = attacker
 
     if (this.attacker == 0) {
-        this.health = 250;
+        this.init_health = 250;
+        this.health = this.init_health;
         this.speed = 1;
     } else if (this.attacker == 1) {
-        this.health = 200;
+        this.init_health = 200;
+        this.health = this.init_health;
         this.speed = 2.5;
     } else if (this.attacker == 2) {
-        this.health = 1000;
+        this.init_health = 1000;
+        this.health = this.init_health;
         this.speed = .5;
     } else if (this.attacker == 3) {
-        this.health = 1000;
+        this.init_health = 1000;
+        this.health = this.init_health;
         this.speed = 2;
     }
 
@@ -681,10 +693,10 @@ attackDude.prototype.draw = function (ctx) {
         //this.death.drawFrame(this.game.clockTick, ctx, this.x, this.y);//function attackDude(game) {this.death. and assert manager
         var snd = new Audio("explosion.mp3"); // buffers automatically when created
         snd.play();
-        this.game.entities[0].money += 500;
         for (var i = 1; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
             if (this === ent) {
+                this.game.entities[0].money += this.init_health;
                 this.game.entities.splice(i, 1);
             };
         };
