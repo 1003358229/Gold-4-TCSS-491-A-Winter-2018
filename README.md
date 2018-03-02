@@ -6,7 +6,7 @@ Dirk Sexton
 
 What to do:  
 1. have different levels of game(exit of path has to be on the right or bottom)  
-1. (levels function done without add waves of enemy)  
+    1. (levels function done without add waves of enemy)  
 2. tower and enemy should be balanced so it can be played with more fun(search first TODO in code)  
 3. bullet animation should be with no directions  
 4. Remove tower or sell tower function?  
