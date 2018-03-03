@@ -4,8 +4,8 @@ Dongsheng Han
 Karan Kurbur  
 Dirk Sexton  
 
-Game: https://1003358229.github.io/Gold-4-TCSS-491-A-Winter-2018/Gold%20four%20TD/
-Video Demo: https://youtu.be/tX7_XiOSprc
+Game: https://1003358229.github.io/Gold-4-TCSS-491-A-Winter-2018/Gold%20four%20TD/  
+Video Demo: https://youtu.be/tX7_XiOSprc  
 
 What to do:  
 1. have different levels of game  
