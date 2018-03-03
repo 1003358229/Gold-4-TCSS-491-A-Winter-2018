@@ -4,6 +4,8 @@ Dongsheng Han
 Karan Kurbur  
 Dirk Sexton  
 
+Video: https://youtu.be/tX7_XiOSprc
+
 What to do:  
 1. have different levels of game  
     1. (levels function done without add waves of enemy)  
