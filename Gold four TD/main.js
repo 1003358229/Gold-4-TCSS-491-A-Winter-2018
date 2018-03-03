@@ -399,6 +399,12 @@ GameBoard.prototype.draw = function (ctx) {
         ctx.strokeText("Victory ", 300, 400);
         ctx.fillStyle = 'white';
         ctx.fillText("Victory ", 300, 400);
+		if(youwincounter <= 0) {
+		
+			var ttt = new Audio("sev023.wav"); // buffers automatically when created
+			ttt.play();
+			youwincounter = 1;
+	}
     }
     Entity.prototype.draw.call(this);
 }
@@ -643,6 +649,7 @@ function attackDude(game, attacker) {
     this.boardX;
     this.boardY;
     this.attacker = attacker
+	this.youlosecounter = 0;
 
     if (this.attacker == 0) {
         this.init_health = 250;
@@ -730,6 +737,12 @@ attackDude.prototype.draw = function (ctx) {
         };
     }
 
+	if((this.x > 745 || this.y > 745) && this.youlosecounter <= 0) {
+		
+			var yyy = new Audio("sev024.wav"); // buffers automatically when created
+			yyy.play();
+			this.youlosecounter = 1;
+	}
     // Game over message
     if (this.x > 745 || this.y > 745) {
         ctx.font = "75px Arial";
@@ -738,6 +751,8 @@ attackDude.prototype.draw = function (ctx) {
         ctx.strokeText("Game Over ", 250, 400);
         ctx.fillStyle = 'white';
         ctx.fillText("Game Over ", 250, 400);
+		
+
         for (var i = 1; i < this.game.entities.length; i++) {
             var ent = this.game.entities[i];
             if (ent.isAttacker == 1) { //if Entity is an enemy, should check to see if it is in range.
@@ -883,6 +898,7 @@ var level_1_load_complete = 0;
 var level_2_load_complete = 0;
 var level_3_load_complete = 0;
 var victory = 0;
+var youwincounter = 0;
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
