@@ -7,14 +7,14 @@
 var towerDamages = [50, 95, 35, 80, 90, 95, 100, 150];
 var towerRanges = [2, 2, 4, 1, 3, 2, 2, 1];
 var towerSpeed = [50, 75, 30, 40, 70, 50, 80, 120];
-var towerPrice = [Math.floor(towerDamages[0] * towerRanges[0] * towerRanges[0] / towerSpeed[0] * 50)
-    , Math.floor(towerDamages[1] * towerRanges[1] * towerRanges[1] / towerSpeed[1] * 50)
-    , Math.floor(towerDamages[2] * towerRanges[2] * towerRanges[2] / towerSpeed[2] * 50)
-    , Math.floor(towerDamages[3] * towerRanges[3] * towerRanges[3] / towerSpeed[3] * 50)
-    , Math.floor(towerDamages[4] * towerRanges[4] * towerRanges[4] / towerSpeed[4] * 50)
-    , Math.floor(towerDamages[5] * towerRanges[5] * towerRanges[5] / towerSpeed[5] * 50)
-    , Math.floor(towerDamages[6] * towerRanges[6] * towerRanges[6] / towerSpeed[6] * 50)
-    , Math.floor(towerDamages[7] * towerRanges[7] * towerRanges[7] / towerSpeed[7] * 50)];
+var towerPrice = [Math.floor(towerDamages[0] * ((1 + 2 * towerRanges[0]) * 4 - 4) / towerSpeed[0] * 20)
+    , Math.floor(towerDamages[1] * ((1 + 2 * towerRanges[1]) * 4 - 4)  / towerSpeed[1] * 20)
+    , Math.floor(towerDamages[2] * ((1 + 2 * towerRanges[2]) * 4 - 4)  / towerSpeed[2] * 20)
+    , Math.floor(towerDamages[3] * ((1 + 2 * towerRanges[3]) * 4 - 4)  / towerSpeed[3] * 20)
+    , Math.floor(towerDamages[4] * ((1 + 2 * towerRanges[4]) * 4 - 4)  / towerSpeed[4] * 20)
+    , Math.floor(towerDamages[5] * ((1 + 2 * towerRanges[5]) * 4 - 4)  / towerSpeed[5] * 20)
+    , Math.floor(towerDamages[6] * ((1 + 2 * towerRanges[6]) * 4 - 4)  / towerSpeed[6] * 20)
+    , Math.floor(towerDamages[7] * ((1 + 2 * towerRanges[7]) * 4 - 4)  / towerSpeed[7] * 20)];
 
 
 //Gameboard
@@ -338,7 +338,7 @@ GameBoard.prototype.draw = function (ctx) {
     ctx.fillText("$" + towerPrice[4] + "          " + towerRanges[4] + "             " + towerDamages[4] + "                 " + towerSpeed[4], 930, 440);
     ctx.fillText("$" + towerPrice[5] + "          " + towerRanges[5] + "             " + towerDamages[5] + "                 " + towerSpeed[5], 930, 520);
     ctx.fillText("$" + towerPrice[6] + "          " + towerRanges[6] + "            " + towerDamages[6] + "                " + towerSpeed[6], 930, 600);
-    ctx.fillText("$" + towerPrice[7] + "            " + towerRanges[7] + "            " + towerDamages[7] + "               " + towerSpeed[7], 930, 680);
+    ctx.fillText("$" + towerPrice[7] + "          " + towerRanges[7] + "            " + towerDamages[7] + "               " + towerSpeed[7], 930, 680);
     ctx.fillText("Click on Towers to select", 930, 760);
 
     //Draw tower menu
@@ -392,7 +392,7 @@ GameBoard.prototype.draw = function (ctx) {
         ctx.stroke();
     }
     ctx.restore();
-    // Game over message
+    // victory message
     if (victory) {
         ctx.font = "75px Arial";
         ctx.strokeStyle = "black";
@@ -646,22 +646,18 @@ function attackDude(game, attacker) {
 
     if (this.attacker == 0) {
         this.init_health = 250;
-        this.health = this.init_health;
         this.speed = 1;
     } else if (this.attacker == 1) {
         this.init_health = 200;
-        this.health = this.init_health;
         this.speed = 2.5;
     } else if (this.attacker == 2) {
         this.init_health = 1000;
-        this.health = this.init_health;
         this.speed = .5;
     } else if (this.attacker == 3) {
         this.init_health = 1000;
-        this.health = this.init_health;
         this.speed = 2;
     }
-
+    this.health = this.init_health;
 }
 
 attackDude.prototype = new Entity();
@@ -749,8 +745,10 @@ attackDude.prototype.draw = function (ctx) {
             } else {
                 ent.towerRange = 0;
             }
-            count = 500;//stop add new enemy
         };
+        count = 500;//stop add new enemy
+        level_1_load_complete = 0;
+        level_2_load_complete = 0;
     }
     ctx.restore();
 
@@ -897,23 +895,22 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     console.log("GAME entities count = " + gameEngine.entities.length);
 
-    var timeInterval = 500;//add every timeInterval/1000 second
-    count = 0;
+    var timeInterval = 1000;//add every timeInterval/1000 second
     gameEngine.start();
     if (level == 1) {
+        count = 0;
         //repeatly add attacker after game start 
         var interval_lv1 = setInterval(function () {
             var attacker = new attackDude(gameEngine, 0);
             gameEngine.addEntity(attacker);
             count++;
-            if (count >= 3) {
+            if (count >= 3) {//enemy count
                 level_1_load_complete = 1;
                 clearInterval(interval_lv1);
             }
         }, timeInterval);
     }
 
-    count = 0;
     var interval_lv2 = setInterval(function () {
         //count enemy
         var enemy_count = 0;
@@ -923,26 +920,30 @@ ASSET_MANAGER.downloadAll(function () {
                 enemy_count++;
             };
         };
-        console.log(enemy_count, level_1_load_complete)
         if (level_1_load_complete && !enemy_count) {
             level = 2;
+            count = 0;
         }
         if (level == 2) {
             //repeatly add attacker after game start 
             var interval = setInterval(function () {
                 var attacker = new attackDude(gameEngine, 1);
                 gameEngine.addEntity(attacker);
+                var attacker = new attackDude(gameEngine, 2);
+                gameEngine.addEntity(attacker);
+                console.log(count, "A2")
                 count++;
-                if (count >= 3) {
+                if (count >= 1) {//enemy count
                     level_2_load_complete = 1;
                     clearInterval(interval);
+                    clearInterval(interval_lv2);
                 }
             }, timeInterval);
-            clearInterval(interval_lv2);
         }
+
     }, timeInterval);
 
-    count = 0;
+
     var interval_lv3 = setInterval(function () {
         //count enemy
         var enemy_count = 0;
@@ -952,16 +953,20 @@ ASSET_MANAGER.downloadAll(function () {
                 enemy_count++;
             };
         };
+
         if (level_1_load_complete && level_2_load_complete && !enemy_count) {
             level = 3;
+            count = 0;
         }
         if (level == 3) {
             //repeatly add attacker after game start 
             var interval = setInterval(function () {
                 var attacker = new attackDude(gameEngine, 2);
                 gameEngine.addEntity(attacker);
+                var attacker = new attackDude(gameEngine, 3);
+                gameEngine.addEntity(attacker);
                 count++;
-                if (count >= 3) {
+                if (count >= 2) {//enemy count
                     level_3_load_complete = 1;
                     clearInterval(interval);
                 }
