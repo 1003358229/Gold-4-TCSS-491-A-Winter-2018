@@ -14,11 +14,36 @@ TCSS491 2018
     <script type="text/javascript" src="./assetmanager.js"></script>
     <script type="text/javascript" src="./gameengine.js"></script>
     <script type="text/javascript" src="./main.js"></script>
+	<style>
+        #playlist{
+            list-style: none;
+        }
+        #playlist li a{
+            color:black;
+            text-decoration: none;
+        }
+        #playlist .current-song a{
+            color:blue;
+        }
+    </style>
 </head>
 <body>
     <canvas id="gameWorld" width="1500" height="840" style="border: 1px solid white; background: black"></canvas>
-    <audio controls autoplay loop>
-        <source src="RoboCop-3-Music-NES-Level-1-Cadillac-Heights-Dusk-[AudioTrimmer.com].ogg" type="audio/ogg">
+	 <p>Select your song below</p>
+    <audio src="" controls loop id="audioPlayer">
+        Sorry, your browser doesn't support html5!
     </audio>
+    <ul id="playlist">
+        <li class="current-song"><a href="RoboCop-3-Music-NES-Level-1-Cadillac-Heights-Dusk-[AudioTrimmer.com].ogg">Song 1</a></li>
+        <li><a href="Guiles theme download.mp3">Song 2</a></li>
+        <li><a href="Mortal_Kombat_-_Original_theme_(mp3.pm).mp3">Song 3</a></li>
+    </ul>
+    <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
+    <script src="audioPlayer.js"></script>
+    <script>
+        // loads the audio player
+        audioPlayer();
+    </script>
+
 </body>
 </html>
