@@ -555,7 +555,7 @@ tower1.prototype.update = function (ctx) {
     }
     //keeps the bullet attacking even when there is no enemy
     if (enemy_counter == 0 && this.fire == false && this.fire_distance != 0) {
-        this.fire == true;
+        this.fire = true;
     }
 
     //keep attacking the same target when bullet already shooted but not yet hit
