@@ -529,9 +529,11 @@ tower1.prototype.update = function (ctx) {
     //loop through all entities in game engine
     var isInrange;
     this.fire = false;
+    var enemy_counter = 0;
     for (var i = 1; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
-        if (this != ent && ent.isAttacker == 1) { //if Entity is an enemy, should check to see if it is in range.
+        if (ent.isAttacker == 1) { //if Entity is an enemy, should check to see if it is in range.
+            enemy_counter++;
             isInrange = this.inRange(ent.boardX, ent.boardY);
             if (isInrange) {
                 this.fire = true;
@@ -539,20 +541,25 @@ tower1.prototype.update = function (ctx) {
                 if (this.attackingEnt == null) {
                     this.attackingEnt = this.inRangeEnt;
                 }
-                if (this.attackingEnt != null && this.attackingEnt != this.inRangeEnt){
+                if (this.attackingEnt != null && this.attackingEnt != this.inRangeEnt) {
                     continue;
                 }
                 break;
             } else {
-                this.fire = false;
+                if (this.fire_distance == 0) {
+                    this.fire = false;
+                }
                 this.inRangeEnt = null;
             }
-        };
-    };
+        }
+    }
+    //keeps the bullet attacking even when there is no enemy
+    if (enemy_counter == 0 && this.fire == false && this.fire_distance != 0) {
+        this.fire == true;
+    }
 
     //keep attacking the same target when bullet already shooted but not yet hit
     if (this.attackingEnt != this.inRangeEnt
-        && !this.inRange(this.attackingEnt.boardX, this.attackingEnt.boardY)
         && this.fire_distance != 0) {
         this.fire = true;
     } else {
