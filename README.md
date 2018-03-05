@@ -8,9 +8,9 @@ Game: https://1003358229.github.io/Gold-4-TCSS-491-A-Winter-2018/Gold%20four%20T
 Video Demo: https://www.youtube.com/watch?v=D-9iVUMeN6s
 
 What to do:  
+1. Open scene?  
 1. have different levels of game  
-    1. (levels function done without add waves of enemy)  
-    2. (exit of path has to be on the right or bottom)  
+    1. exit of path has to be on the right or bottom  
 2. tower and enemy should be balanced so it can be played with more fun  
     1. tower price is balanced a bit  
 3. bullet animation should be with no directions  
