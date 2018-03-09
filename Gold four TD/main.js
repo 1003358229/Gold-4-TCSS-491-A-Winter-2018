@@ -1104,7 +1104,7 @@ ASSET_MANAGER.downloadAll(function () {
                     count++;
                 }
                 wait++;
-                if (count >= 20 {//enemy count
+                if (count >= 20) {//enemy count
                     level_2_load_complete = 1;
                     clearInterval(interval);
                     clearInterval(interval_lv2);
