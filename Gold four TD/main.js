@@ -32,6 +32,8 @@ function GameBoard(game) {
     this.doneWithLevel1 = false;
     this.doneWithLevel2 = false;
     this.doneWithLevel3 = false;
+    this.doneWithLevel4 = false;
+    this.doneWithLevel5 = false;
 
 
     for (var i = 0; i <= 18; i++) {
@@ -146,7 +148,7 @@ GameBoard.prototype.update = function () {
     }
 
     //draw path of different level
-    if (level == 4) {
+    if (level == 1) {
         //Save Path in board 2d array
         this.board[0][5] = 10;
         this.board[1][5] = 10;
@@ -162,9 +164,6 @@ GameBoard.prototype.update = function () {
     if (level == 2) {
         for (var i = 0; i <= 18; i++) {
             for (var j = 0; j <= 18; j++) {
-                // if (this.board[i][j] == 10) {
-                //     this.board[i][j] = 0;
-                // }
                 if(this.doneWithLevel1 == false) {
                     this.board[i][j] = 0;
                 }
@@ -220,9 +219,6 @@ GameBoard.prototype.update = function () {
     if (level == 3) {
         for (var i = 0; i <= 18; i++) {
             for (var j = 0; j <= 18; j++) {
-                // if (this.board[i][j] == 10) {
-                //     this.board[i][j] = 0;
-                // }
                 if(this.doneWithLevel2 == false) {
                     this.board[i][j] = 0;
                 }
@@ -294,35 +290,119 @@ GameBoard.prototype.update = function () {
 
 
     
-    if (level == 1) {
-        // for (var i = 0; i <= 18; i++) {
-        //     for (var j = 0; j <= 18; j++) {
-        //         // if (this.board[i][j] == 10) {
-        //         //     this.board[i][j] = 0;
-        //         // }
-        //         if(this.doneWithLevel3 == false) {
-        //             this.board[i][j] = 0;
-        //         }
+    if (level == 4) {
+        for (var i = 0; i <= 18; i++) {
+            for (var j = 0; j <= 18; j++) {
+                if(this.doneWithLevel3 == false) {
+                    this.board[i][j] = 0;
+                }
 
-        //     }
-        // }
-
-        // if(this.doneWithLevel3 == false) {
-        //     this.doneWithLevel3 = true;
-        // }
-        this.board[0][8] = 10;
-        this.board[1][8] = 10;
-        this.board[2][8] = 10;
-        this.board[3][8] = 10;
-        this.board[3][9] = 10;
-        for (var xcoord = 3; xcoord <= 17; xcoord++) {
-            this.board[xcoord][9] = 10;
+            }
         }
+        if(this.doneWithLevel3 == false) {
+            this.doneWithLevel3 = true;
+        }
+
+        this.board[16][0] = 10;
+        this.board[16][1] = 10;
+        this.board[16][2] = 10;
+        for (var coord = 0; coord <= 8; coord++) {
+            this.board[16-coord][3] = 10;
+        }
+        this.board[8][2] = 10;
+        this.board[8][1] = 10;
+        for (var coord = 0; coord <= 6; coord++) {
+            this.board[8-coord][1] = 10;
+        }
+        this.board[2][2] = 10;
+        this.board[2][3] = 10;
+        this.board[2][4] = 10;
+        this.board[2][5] = 10;
+        this.board[2][6] = 10;
+        this.board[2][7] = 10;
+        this.board[2][8] = 10;
+        this.board[2][9] = 10;
+        for (var coord = 0; coord <= 6; coord++) {
+            this.board[2+coord][9] = 10;
+        }        
+        this.board[8][8] = 10;
+        this.board[8][7] = 10;
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[4+coord][7] = 10;
+        }        
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[4][3+coord] = 10;
+        }        
+        this.board[5][3] = 10;
+        this.board[6][3] = 10;
+        this.board[6][4] = 10;
+        this.board[6][5] = 10;
+        for (var coord = 0; coord <= 9; coord++) {
+            this.board[7+coord][5] = 10;
+        }        
+        for (var coord = 0; coord <= 6; coord++) {
+            this.board[16][6+coord] = 10;
+        }        
+        for (var coord = 0; coord <= 13; coord++) {
+            this.board[2+coord][12] = 10;
+        }        
+        for (var coord = 0; coord <= 3; coord++) {
+            this.board[2][13+coord] = 10;
+        }        
+        for (var coord = 0; coord <= 14; coord++) {
+            this.board[3+coord][16] = 10;
+        }        
+
+
+
     }
 
 
 
 
+
+    if(level == 5) {
+        
+        for (var i = 0; i <= 18; i++) {
+            for (var j = 0; j <= 18; j++) {
+                if(this.doneWithLevel4 == false) {
+                    this.board[i][j] = 0;
+                }
+
+            }
+        }
+        if(this.doneWithLevel4 == false) {
+            this.doneWithLevel4 = true;
+        }
+
+        this.board[9][0] = 10;
+        for (var coord = 0; coord <= 12; coord++) {
+            this.board[9][1+coord] = 10;
+        }        
+        this.board[8][13] = 10;
+        this.board[7][13] = 10;
+        for (var coord = 0; coord <= 7; coord++) {
+            this.board[7][5+coord] = 10;
+        }        
+        for (var coord = 0; coord <= 5; coord++) {
+            this.board[1+coord][5] = 10;
+        }        
+        for (var coord = 0; coord <= 10; coord++) {
+            this.board[1][6+coord] = 10;
+        }        
+        for (var coord = 0; coord <= 12; coord++) {
+            this.board[2+coord][16] = 10;
+        }        
+
+        for (var coord = 0; coord <= 12; coord++) {
+            this.board[14][3+coord] = 10;
+        }        
+        this.board[15][3] = 10;
+        this.board[16][3] = 10;
+        this.board[17][3] = 10;
+
+
+    }
 
 
 
@@ -950,6 +1030,9 @@ var MAX_LEVEL = 3;
 var level_1_load_complete = 0;
 var level_2_load_complete = 0;
 var level_3_load_complete = 0;
+var level_4_load_complete = 0;
+var level_5_load_complete = 0;
+
 var victory = 0;
 var youwincounter = 0;
 
@@ -992,7 +1075,7 @@ ASSET_MANAGER.downloadAll(function () {
     }
 
 
-    var interval2 = 1600;
+    var interval2 = 2000;
     var interval_lv2 = setInterval(function () {
         //count enemy
         var enemy_count = 0;
@@ -1021,7 +1104,7 @@ ASSET_MANAGER.downloadAll(function () {
                     count++;
                 }
                 wait++;
-                if (count >= 20) {//enemy count
+                if (count >= 20 {//enemy count
                     level_2_load_complete = 1;
                     clearInterval(interval);
                     clearInterval(interval_lv2);
@@ -1031,7 +1114,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     }, interval2);
 
-    var interval3 = 1200;
+    var interval3 = 1500;
 
     var interval_lv3 = setInterval(function () {
         //count enemy
@@ -1072,6 +1155,101 @@ ASSET_MANAGER.downloadAll(function () {
         }
     }, interval3);
 
+    var interval4 = 1000;
+
+
+    var interval_lv4 = setInterval(function () {
+        //count enemy
+        var enemy_count = 0;
+        for (var i = 1; i < gameEngine.entities.length; i++) {
+            var ent = gameEngine.entities[i];
+            if (ent.isAttacker == 1) {
+                enemy_count++;
+            };
+        };
+
+        if (level_1_load_complete && level_2_load_complete && level_3_load_complete && !enemy_count) {
+            level = 4;
+            count = 0;
+        }
+        if (level == 4) {
+            //repeatly add attacker after game start 
+            var interval = setInterval(function () {
+                if(wait >0) {
+                    if(count%5) {
+                        var attacker = new attackDude(gameEngine,3,3);
+                    }else{
+                        var randomNumber = Math.floor(Math.random() * 3);
+                        //console.log("RANDOM NUMBER" + randomNumber);        
+                        var attacker = new attackDude(gameEngine,randomNumber,3);
+                    }
+                    gameEngine.addEntity(attacker);
+                    count++;
+                }
+                wait++;
+                if (count >= 40) {//enemy count
+                    level_4_load_complete = 1;
+                    clearInterval(interval);
+                }
+            }, interval4);
+            clearInterval(interval_lv4);
+        }
+    }, interval4);
+
+
+    
+    var interval5 = 1000;
+
+
+    var interval_lv5 = setInterval(function () {
+        //count enemy
+        var enemy_count = 0;
+        for (var i = 1; i < gameEngine.entities.length; i++) {
+            var ent = gameEngine.entities[i];
+            if (ent.isAttacker == 1) {
+                enemy_count++;
+            };
+        };
+
+        if (level_1_load_complete && level_2_load_complete && level_3_load_complete && level_4_load_complete && !enemy_count) {
+            level = 5;
+            count = 0;
+        }
+        if (level == 5) {
+            //repeatly add attacker after game start 
+            var interval = setInterval(function () {
+
+                if(wait >0) {
+                    if(count%3) {
+                        var attacker = new attackDude(gameEngine,3,4);
+                    }else{
+                        var randomNumber = Math.floor(Math.random() * 3);
+                        //console.log("RANDOM NUMBER" + randomNumber);        
+                        var attacker = new attackDude(gameEngine,randomNumber,4);
+                    }
+                    gameEngine.addEntity(attacker);
+                    count++;
+                }
+                wait++;
+                if (count >= 50) {//enemy count
+                    level_5_load_complete = 1;
+                    clearInterval(interval);
+                }
+            }, interval5);
+            clearInterval(interval_lv5);
+        }
+    }, interval5);
+
+
+
+
+
+
+
+
+
+
+
 
     var interval_level = setInterval(function () {
         var enemy_count = 0;
@@ -1081,7 +1259,7 @@ ASSET_MANAGER.downloadAll(function () {
                 enemy_count++;
             };
         };
-        if (level_1_load_complete && level_2_load_complete && level_3_load_complete && !enemy_count) {
+        if (level_1_load_complete && level_2_load_complete && level_3_load_complete && level_4_load_complete  && level_5_load_complete && !enemy_count) {
             victory = 1;
             clearInterval(interval_level);
         }
