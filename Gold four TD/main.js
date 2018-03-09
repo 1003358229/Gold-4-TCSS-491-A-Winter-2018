@@ -24,7 +24,7 @@ function GameBoard(game) {
     this.range_y = 0;
     this.display_range = false;
     this.score = 0;
-    this.money = 1000;
+    this.money = 1200;
     this.canBuy = true;
     this.purchaes_and_placed = false;
     this.player = 0;
