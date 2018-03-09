@@ -31,6 +31,7 @@ function GameBoard(game) {
     this.board = [];
     this.doneWithLevel1 = false;
     this.doneWithLevel2 = false;
+    this.doneWithLevel3 = false;
 
 
     for (var i = 0; i <= 18; i++) {
@@ -145,7 +146,7 @@ GameBoard.prototype.update = function () {
     }
 
     //draw path of different level
-    if (level == 1) {
+    if (level == 4) {
         //Save Path in board 2d array
         this.board[0][5] = 10;
         this.board[1][5] = 10;
@@ -288,6 +289,50 @@ GameBoard.prototype.update = function () {
         this.board[10][16] = 10;
         this.board[10][17] = 10;
     }
+
+
+
+
+    
+    if (level == 1) {
+        // for (var i = 0; i <= 18; i++) {
+        //     for (var j = 0; j <= 18; j++) {
+        //         // if (this.board[i][j] == 10) {
+        //         //     this.board[i][j] = 0;
+        //         // }
+        //         if(this.doneWithLevel3 == false) {
+        //             this.board[i][j] = 0;
+        //         }
+
+        //     }
+        // }
+
+        // if(this.doneWithLevel3 == false) {
+        //     this.doneWithLevel3 = true;
+        // }
+        this.board[0][8] = 10;
+        this.board[1][8] = 10;
+        this.board[2][8] = 10;
+        this.board[3][8] = 10;
+        this.board[3][9] = 10;
+        for (var xcoord = 3; xcoord <= 17; xcoord++) {
+            this.board[xcoord][9] = 10;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Entity.prototype.update.call(this);
 }
 
@@ -616,7 +661,7 @@ tower1.prototype.inRange = function (x, y) {
 
 
 //add attacker
-function attackDude(game, attacker) {
+function attackDude(game, attacker, levelMultiplier) {
     this.scale = 0.8;
 
     //Regular enemy
@@ -655,21 +700,22 @@ function attackDude(game, attacker) {
     this.ctx = game.ctx;
     this.boardX;
     this.boardY;
-    this.attacker = attacker
+    this.attacker = attacker;
+    this.level = levelMultiplier;
 	this.youlosecounter = 0;
 
     if (this.attacker == 0) {
-        this.init_health = 250;
+        this.init_health = 250 * this.level;
         this.speed = 1;
     } else if (this.attacker == 1) {
-        this.init_health = 200;
-        this.speed = 2.5;
+        this.init_health = 200 * this.level;
+        this.speed = 1.5;
     } else if (this.attacker == 2) {
-        this.init_health = 1000;
+        this.init_health = 500 * this.level;
         this.speed = .5;
     } else if (this.attacker == 3) {
-        this.init_health = 1000;
-        this.speed = 2;
+        this.init_health = 1000 * this.level;
+        this.speed = 1;
     }
     this.health = this.init_health;
 }
@@ -918,22 +964,35 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     console.log("GAME entities count = " + gameEngine.entities.length);
 
-    var timeInterval = 1000;//add every timeInterval/1000 second
+    var timeInterval = 2500;//add every timeInterval/1000 second
+
     gameEngine.start();
     if (level == 1) {
         count = 0;
+        var wait = 0;
         //repeatly add attacker after game start 
         var interval_lv1 = setInterval(function () {
-            var attacker = new attackDude(gameEngine, 0);
-            gameEngine.addEntity(attacker);
-            count++;
-            if (count >= 3) {//enemy count
-                level_1_load_complete = 1;
-                clearInterval(interval_lv1);
+            if(wait >0) {
+                if(count == 10) {
+                    var attacker = new attackDude(gameEngine,3,1);
+                }else{
+                    var randomNumber = Math.floor(Math.random() * 3);
+                    console.log("RANDOM NUMBER" + randomNumber);        
+                    var attacker = new attackDude(gameEngine,randomNumber,1);
+                }
+                gameEngine.addEntity(attacker);
+                count++;
+                if (count > 10) {//enemy count
+                    level_1_load_complete = 1;
+                    clearInterval(interval_lv1);
+                }
             }
+            wait++;
         }, timeInterval);
     }
 
+
+    var interval2 = 1600;
     var interval_lv2 = setInterval(function () {
         //count enemy
         var enemy_count = 0;
@@ -950,22 +1009,29 @@ ASSET_MANAGER.downloadAll(function () {
         if (level == 2) {
             //repeatly add attacker after game start 
             var interval = setInterval(function () {
-                var attacker = new attackDude(gameEngine, 1);
-                gameEngine.addEntity(attacker);
-                var attacker = new attackDude(gameEngine, 2);
-                gameEngine.addEntity(attacker);
-                console.log(count, "A2")
-                count++;
-                if (count >= 1) {//enemy count
+                if(wait >0) {
+                    if(count == 10 || count == 12 || count == 14 || count == 16 || count == 18 || count == 20) {
+                        var attacker = new attackDude(gameEngine,3,2);
+                    }else{
+                        var randomNumber = Math.floor(Math.random() * 3);
+                        console.log("RANDOM NUMBER" + randomNumber);        
+                        var attacker = new attackDude(gameEngine,randomNumber,2);
+                    }
+                    gameEngine.addEntity(attacker);
+                    count++;
+                }
+                wait++;
+                if (count >= 20) {//enemy count
                     level_2_load_complete = 1;
                     clearInterval(interval);
                     clearInterval(interval_lv2);
                 }
-            }, timeInterval);
+            }, interval2);
         }
 
-    }, timeInterval);
+    }, interval2);
 
+    var interval3 = 1200;
 
     var interval_lv3 = setInterval(function () {
         //count enemy
@@ -984,19 +1050,27 @@ ASSET_MANAGER.downloadAll(function () {
         if (level == 3) {
             //repeatly add attacker after game start 
             var interval = setInterval(function () {
-                var attacker = new attackDude(gameEngine, 2);
-                gameEngine.addEntity(attacker);
-                var attacker = new attackDude(gameEngine, 3);
-                gameEngine.addEntity(attacker);
-                count++;
-                if (count >= 2) {//enemy count
+
+                if(wait >0) {
+                    if(count%3 == 0 || count == 14 || count == 16 || count == 18 || count == 20) {
+                        var attacker = new attackDude(gameEngine,3,2.5);
+                    }else{
+                        var randomNumber = Math.floor(Math.random() * 3);
+                        //console.log("RANDOM NUMBER" + randomNumber);        
+                        var attacker = new attackDude(gameEngine,randomNumber,2.5);
+                    }
+                    gameEngine.addEntity(attacker);
+                    count++;
+                }
+                wait++;
+                if (count >= 30) {//enemy count
                     level_3_load_complete = 1;
                     clearInterval(interval);
                 }
-            }, timeInterval);
+            }, interval3);
             clearInterval(interval_lv3);
         }
-    }, timeInterval);
+    }, interval3);
 
 
     var interval_level = setInterval(function () {
